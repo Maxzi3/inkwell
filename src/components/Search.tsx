@@ -18,13 +18,13 @@ const Search = () => {
 
   return (
     <div className="relative w-full max-w-[500px] mx-auto">
-    <FiSearch className="absolute left-7 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-300 hover:scale-110 transition-transform" />
+    <FiSearch className="absolute left-8 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-300 hover:scale-110 transition-transform" />
       <input
-        className="border border-gray-300 dark:border-gray-600 bg-[#e7edf4] dark:bg-[#223649] text-[#0d141c] dark:text-white  md:px-4  focus:ring-blue-500 transition-all duration-300 placeholder:text-[#49739c] dark:placeholder:text-[#90aecb] flex w-11/12 mx-auto my-4 py-3 pl-10   overflow-hidden rounded-lg  focus:outline-0 focus:ring-0 border-none  focus:border-none h-full  px-4 text-base font-normal leading-normal "
+        className="border-none border-text-primary bg-input focus:ring-blue-500 transition-all duration-300 placeholder:text-text-primary flex w-11/12 mx-auto py-3 pl-[40px] overflow-hidden rounded-lg focus:outline-0 focus:ring-0 h-full  text-base font-normal leading-normal"
         type="text"
         placeholder="Search"
         value={searchTerm}
-        onChange={handleSearch}
+        onChange={handleSearch} 
       />
       {searchTerm && (
         <button

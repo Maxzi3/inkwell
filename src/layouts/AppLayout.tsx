@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom'
 import Search from '../components/Search';
 import AccountHeader from '../components/AppHeader';
 import SideBar from '../components/SideBar';
+import Footer from '../components/Footer';
 
 const AppLayout = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -15,16 +16,14 @@ const AppLayout = () => {
  
 if (isMobile) {
     return (
-      <div>
-        <div className="md:hidden block bg-white dark:bg-gray-900 dark:text-white text-gray-700">
+      <div className='md:hidden block text-text-primary bg-primary'>
+        <div className="py-4">
           <Search/>
-          <main className="bg-white dark:bg-gray-900 dark:text-white text-gray-700  md:overflow-scroll min-h-screen ">
+          </div>
+          <main className="md:overflow-scroll min-h-screen ">
             <Outlet />
           </main>
-          {/* <AccountFooter /> */}
-        </div>
-
-        
+          <Footer />   
       </div>
     );
   }
@@ -32,11 +31,11 @@ if (isMobile) {
   // Desktop layout
   return (
     <div>
-      <div className="hidden md:grid h-screen grid-cols-[14rem_1fr] grid-rows-[auto_1fr]">
+      <div className="hidden md:grid h-screen grid-cols-[11rem_1fr] grid-rows-[auto_1fr] text-text-primary bg-primary ">
         <AccountHeader />
         <SideBar />
-        <main className=" text-gray-700  overflow-hidden">
-          <div className="max-w-[120rem] mx-auto flex flex-col gap-8">
+        <main className="overflow-hidden">
+          <div className="max-w-[120rem] mx-auto flex flex-col gap-8 bg-backround text-text">
             <Outlet />
           </div>
         </main>

@@ -1,1 +1,33 @@
 @import "tailwindcss";
+@theme {
+  --color-text-primary: var(--text);
+  --color-text-secondary: var(--text2);
+  --color-primary: var(--background);
+  --color-secondary: var(--background2);
+  --color-input: var(--input);
+}
+
+/* light mode by default */
+:root {
+  --text: #364153;
+  --text2: #90aecb;
+  --background: #f8fafc;
+  --background2: #101a23;
+  --input: #e7edf4;
+}
+
+/* dark mode overrides */
+.dark {
+  --text: #ffffff;
+  --text2: #ffffff;
+  --background: #101a23;
+  --background2: #ffffff;
+  --input: #223649;
+}
+
+
+html {
+
+  /* Creating animations for dark mode */
+  transition: background-color 0.5s ease, border 0.3s ease, button-color 0.3s ease, color 0.3s ease;
+}
