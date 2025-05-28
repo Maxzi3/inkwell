@@ -5,6 +5,8 @@
   --color-primary: var(--background);
   --color-secondary: var(--background2);
   --color-input: var(--input);
+  --color-btnbg: var(--buttonbg);
+  --color-btntxt: var(--buttontx);
 }
 
 /* light mode by default */
@@ -14,6 +16,8 @@
   --background: #f8fafc;
   --background2: #101a23;
   --input: #e7edf4;
+  --buttonbg:#364153;
+  --buttontx:#f8fafc;
 }
 
 /* dark mode overrides */
@@ -23,6 +27,8 @@
   --background: #101a23;
   --background2: #ffffff;
   --input: #223649;
+  --buttonbg:#f8fafc;
+  --buttontx:#364153;
 }
 
 

@@ -62,21 +62,21 @@ function LoginForm() {
   // const showResend =
   //   error?.message === "Please verify your email before logging in.";
   const isLoading = false
-  const showResend = true
+  const showResend = false
   const isResending = false
   return (
 
     <div className="min-h-screen flex items-center gap-3.5 px-4 flex-col space-x-4 space-y-4 text-text-primary bg-primary">
-      <div className="flex items-center p-4 justify-between w-full">
+      <div className="flex items-center p-4 md:p-5 justify-between w-full">
         <button onClick={handleClick}><FaArrowLeftLong className="flex shrink-0 items-center" /></button>
         <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
-          Login
+          Logo
         </h2>
       </div>
       <h2 className=" tracking-light text-[28px] font-bold leading-tight px-4 text-center pt-5">Welcome back</h2>
       <form
         // onSubmit={handleSubmit}
-        className="mx-auto my-10 flex flex-col justify-center md:p-10 rounded-lg space-y-6 text-sm md:border border-gray-200 md:w-[30rem] w-[20rem]"
+        className="mx-auto my-10 md:my-2 flex flex-col justify-center md:p-10 rounded-lg space-y-6 text-sm md:border border-gray-200 md:w-[30rem] w-[20rem]"
       >
         {/* Email Input */}
         <div className="mb-3 flex flex-col items-center">
@@ -97,13 +97,18 @@ function LoginForm() {
         </div>
 
         {/* Password Input */}
-        <div className="mb-3 flex flex-col items-center">
+        <div className="flex justify-between items-center mb-2">
           <label
             htmlFor="password"
-            className="block text-base font-medium mb-2 self-start"
+            className="block text-base font-medium self-start"
           >
             Password
           </label>
+          <Link to="/forgotpassword" className="flex justify-end hover:text-blue-600">
+            Forgot Password?
+          </Link>
+        </div>
+        <div className="mb-3 flex flex-col items-center">
           <FormInput
             type="password"
             id="password"
@@ -113,13 +118,12 @@ function LoginForm() {
             disabled={isLoading}
           />
         </div>
-
         {/* Submit Button */}
         <div className="flex flex-col items-center">
           <button
             type="submit"
             // disabled={isLoading || !email || !password}
-            className="w-[150px] mt-2 py-3 rounded-md disabled:bg-input bg-secondary text-primary hover:text-secondary hover:bg-input"
+            className="w-[150px] mt-7 py-3 rounded-md disabled:bg-input bg-secondary text-primary hover:text-secondary hover:bg-input"
           >
             {isLoading ? (
               <div className="flex justify-center">
@@ -148,9 +152,7 @@ function LoginForm() {
               SignUp
             </Link>
           </p>
-          <p className="text-center">
-            Forgot Password? <Link to="/forgotpassword">Click here</Link>
-          </p>
+
         </div>
       </form>
     </div>

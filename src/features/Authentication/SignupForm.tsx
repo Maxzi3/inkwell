@@ -25,12 +25,13 @@ function SignupForm() {
     const isLoading = false;
     return (
         <div className="min-h-screen flex items-center justify-center p-4 flex-col space-x-4 space-y-2 text-text-primary bg-primary">
-            <div className="flex items-center px-4 justify-between w-full">
+            <div className="flex items-center  p-4 md:p-5 justify-between w-full">
                 <button onClick={handleClick}><FaArrowLeftLong className="flex shrink-0 items-center" /></button>
                 <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
-                    Create an account
+                    logo
                 </h2>
             </div>
+                <h2 className=" tracking-light text-[28px] font-bold leading-tight p-4 text-center pt-5">Create Account</h2>
             <form
                 //   onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col justify-center md:p-8 py-8 rounded-lg md:border border-gray-200 text-sm md:w-[30rem] w-[20rem]"
@@ -48,6 +49,27 @@ function SignupForm() {
                         id="fullName"
                         //   disabled={isLoading}
                         placeholder="John Doe"
+                    //   {...register("fullName", { required: "This Field is Required" })}
+                    />
+                    {/* {errors?.fullName && (
+          <span className="text-red-600 text-sm self-start">
+            {errors.fullName.message}
+          </span>
+        )} */}
+                </div>
+                {/* UserName */}
+                <div className="mb-3 flex flex-col items-center">
+                    <label
+                        htmlFor="fullName"
+                        className="block text-base font-medium mb-1 self-start"
+                    >
+                        Username
+                    </label>
+                    <FormInput
+                        type="text"
+                        id="fullName"
+                        //   disabled={isLoading}
+                        placeholder="@johndoe"
                     //   {...register("fullName", { required: "This Field is Required" })}
                     />
                     {/* {errors?.fullName && (
@@ -162,7 +184,7 @@ function SignupForm() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="px-4 py-3 w-[150px] rounded-md disabled:bg-input bg-secondary text-primary hover:text-secondary hover:bg-input "
+                        className="px-4 py-3 w-[150px] rounded-md disabled:bg-input bg-secondary text-primary hover:text-secondary hover:bg-input"
                     >
                         {isLoading ? (
                             <div className="flex justify-center">
@@ -172,7 +194,7 @@ function SignupForm() {
                             "Signup"
                         )}
                     </button>
-                    <p className="py-2 ">
+                    <p className="py-4 ">
                         Have an account?{" "}
                         <Link className="hover:text-blue-600" to="/login">
                             LogIn

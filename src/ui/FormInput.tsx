@@ -23,7 +23,7 @@ const FormInput: React.FC<FormInputProps> = ({
             onChange={onChange}
             disabled={disabled}
             placeholder={placeholder}
-            className="w-full p-3 border rounded-md border-none border-text-primary bg-input focus:ring-blue-500 transition-all duration-300 placeholder:text-text-primary flex  mx-auto py-4  overflow-hidden  focus:outline-0 focus:ring-0 h-full text-base font-normal leading-normal disabled:bg-gray-500 "
+            className="w-full p-3 border rounded-md border-none border-text-primary bg-input focus:ring-blue-500 transition-all duration-300 placeholder:text-text-primary flex  mx-auto overflow-hidden  focus:outline-0 focus:ring-0 h-full text-base font-normal leading-normal disabled:bg-gray-500 "
             {...rest}
         />
     );

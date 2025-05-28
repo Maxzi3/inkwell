@@ -1,54 +1,73 @@
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import AppLayout from './layouts/AppLayout';
-import DraftsPage from './pages/DraftsPage';
-import BookmarksPage from './pages/BookmarksPage';
-import LikesPage from './pages/LikesPage';
-import NotificationPage from './pages/NotificationPage';
-import ProfilePage from './pages/ProfilePage';
-import CreatePost from './pages/CreatePost';
-import BlogDetails from './features/Blog/BlogDetails';
-import LoginForm from './features/Authentication/LoginForm';
-import SignupForm from './features/Authentication/SignupForm';
-import ForgotPasswordForm from './features/Authentication/ForgotPasswordForm';
-import EmailVerification from './features/Authentication/EmailVerification';
-import ResetPasswordPage from './features/Authentication/ResetPassword';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import HomePage from "./pages/HomePage";
+import AppLayout from "./layouts/AppLayout";
+import DraftsPage from "./pages/DraftsPage";
+import BookmarksPage from "./pages/BookmarksPage";
+import LikesPage from "./pages/LikesPage";
+import NotificationPage from "./pages/NotificationPage";
+import ProfilePage from "./pages/ProfilePage";
+import BlogDetails from "./features/Post/PostDetail";
+import LoginForm from "./features/Authentication/LoginForm";
+import SignupForm from "./features/Authentication/SignupForm";
+import ForgotPasswordForm from "./features/Authentication/ForgotPasswordForm";
+import EmailVerification from "./features/Authentication/EmailVerification";
+import ResetPasswordPage from "./features/Authentication/ResetPassword";
+import UpdatePage from "./pages/UpdatePage";
+import UserPostsPage from "./pages/UserPostsPage";
+import NewPostPage from "./pages/NewPostPage";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route >
+      <Route>
         {/* Public Routes */}
-        < Route path="/login" element={< LoginForm />} />
-        < Route path="/signup" element={< SignupForm />} />
-        < Route path="/forgotpassword" element={< ForgotPasswordForm />} />
-        < Route
-          path="/verify-email/:token"
-          element={< EmailVerification />}
-        />
-        < Route path="/reset-password/:token" element={< ResetPasswordPage />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/signup" element={<SignupForm />} />
+        <Route path="/forgotpassword" element={<ForgotPasswordForm />} />
+        <Route path="/verify-email/:token" element={<EmailVerification />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
-
-        <Route path="/" element={< AppLayout />}>
+        <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/blog/:slug" element={<BlogDetails />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/updatedata" element={<UpdatePage />} />
           <Route path="/drafts" element={<DraftsPage />} />
           <Route path="/bookmarks" element={<BookmarksPage />} />
           <Route path="/likes" element={<LikesPage />} />
           <Route path="/notification" element={<NotificationPage />} />
-          <Route path="/createpost" element={<CreatePost />} />
-        </Route >
+          <Route path="/createpost" element={<NewPostPage />} />
 
-      </Route >
+          <Route path="/profile" element={<ProfilePage />}>
+            <Route path="/profile/likes" element={<LikesPage />} />
+            <Route path="/profile/bookmarks" element={<BookmarksPage />} />
+            <Route path="/profile/drafts" element={<DraftsPage />} />
+            <Route path="/profile/userposts" element={<UserPostsPage />} />
+          </Route>
+        </Route>
+      </Route>
     )
   );
   return (
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
+};
 
-  )
-}
-
-export default App
-
-
+export default App;

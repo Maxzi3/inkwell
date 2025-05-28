@@ -23,11 +23,16 @@ function EmailVerification() {
     //     }
     // }, [token, verify]);
     const isLoading = false
+    const error = false
     return (
-        <div className="my-20 flex items-center justify-center px-4 flex-col gap-10 space-x-4 space-y-5 bg-white dark:bg-gray-900 dark:text-white text-gray-700">
-          
-            <div className="p-6 rounded-md w-full max-w-md text-center">
-                {/* <h1 className="text-xl font-semibold mb-4">
+        <div className="min-h-screen flex pt-36 items-center px-4 flex-col space-x-4  text-text-primary bg-primary">
+            <div className="flex items-center p-4 md:p-5 justify-between w-full">
+                <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
+                    Logo
+                </h2>
+            </div>
+            <div className="p-6 flex flex-col md:my- rounded-md w-full max-w-md text-center">
+                <h1 className="text-xl font-semibold mb-4">
                     {isLoading ? (
                         "Verifying your email..."
                     ) : error ? (
@@ -35,8 +40,8 @@ function EmailVerification() {
                     ) : (
                         <p className="text-green-800">Verification Complete</p>
                     )}
-                </h1> */}
-                {isLoading && (
+                </h1>
+                {!isLoading && (
                     <p>
                         Please wait a moment.
                         <span className="flex justify-center">
