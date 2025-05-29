@@ -12,7 +12,7 @@ import BookmarksPage from "./pages/BookmarksPage";
 import LikesPage from "./pages/LikesPage";
 import NotificationPage from "./pages/NotificationPage";
 import ProfilePage from "./pages/ProfilePage";
-import BlogDetails from "./features/Post/PostDetail";
+import PostDetail from "./features/Post/PostDetail";
 import LoginForm from "./features/Authentication/LoginForm";
 import SignupForm from "./features/Authentication/SignupForm";
 import ForgotPasswordForm from "./features/Authentication/ForgotPasswordForm";
@@ -45,7 +45,7 @@ const App = () => {
 
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="/blog/:slug" element={<BlogDetails />} />
+          <Route path="/posts/:slug" element={<PostDetail />} />
           <Route path="/updatedata" element={<UpdatePage />} />
           <Route path="/drafts" element={<DraftsPage />} />
           <Route path="/bookmarks" element={<BookmarksPage />} />

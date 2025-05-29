@@ -2,8 +2,15 @@ export interface Post  {
   _id: string;
   title: string;
   content: string;
-  category: string;
   image?: string;
+  createdAt: string;
+  author: {
+    fullName: string;
+    avatar: string;
+  };
+  likes: string[];
+  bookmarks: string[];
+  comment: string[];
 }
   
   export interface Comment {

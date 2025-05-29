@@ -1,6 +1,10 @@
+import AllPosts from "../features/Post/AllPosts"
+
+
 const HomePage = () => {
+
   return (
-    <div>wertyuio</div>
+    <div><AllPosts /></div>
   )
 }
 
