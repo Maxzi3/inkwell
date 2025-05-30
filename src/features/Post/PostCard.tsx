@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 // currentUserId: string
 // currentUserId
 const PostCard = ({ post}: { post: Post;  }) => {
-    console.log(post)
+    
     // const isLiked = post.likes.includes(currentUserId)
     // const isBookmarked = post.bookmarks.includes(currentUserId)
 

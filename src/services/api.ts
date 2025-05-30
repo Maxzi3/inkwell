@@ -2,46 +2,51 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL: 'http://localhost:3000/api',
-  withCredentials: true // ⚠️ This allows cookies to be sent
+  withCredentials: true, // 
 })
 
-// store access token in memory (or a custom hook)
+// Access token stored in memory
 let accessToken: string | null = null
 
-// set token
-export const setAccessToken = (token: string) => {
+export const setAccessToken = (token: string | null) => {
   accessToken = token
 }
 
-// attach token to every request
+export { accessToken };
+
+// Add Authorization header to every request
 api.interceptors.request.use(config => {
   if (accessToken && config.headers) {
+    console.log('🔐 Using access token:', accessToken)
     config.headers.Authorization = `Bearer ${accessToken}`
   }
   return config
 })
 
-// handle 401 errors and refresh token
+// Handle 401 and try refresh logic (except for login/refresh routes)
 api.interceptors.response.use(
   res => res,
   async error => {
     const originalRequest = error.config
 
-    // if access token expired and request hasn't been retried
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    const isLoginOrRefresh =
+      originalRequest.url?.includes('/auth/login') ||
+      originalRequest.url?.includes('/auth/refresh-token')
+
+    // If 401 error, and not a login/refresh request, and not retried yet
+    if (error.response?.status === 401 && !originalRequest._retry && !isLoginOrRefresh) {
       originalRequest._retry = true
       try {
-        // call refresh endpoint
-        const refreshRes = await api.get('/auth/refresh-token')
+        const refreshRes = await api.post('/auth/refresh-token')
         const newAccessToken = refreshRes.data.accessToken
         setAccessToken(newAccessToken)
 
-        // retry original request with new token
+        // Retry the original request with new token
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
         return api(originalRequest)
       } catch (refreshError) {
-        console.error('Refresh token failed', refreshError)
-        // Optionally redirect to login
+        console.error('🔴 Refresh token failed:', refreshError)
+        return Promise.reject(refreshError) // 🔒 Prevent retry loops
       }
     }
 
