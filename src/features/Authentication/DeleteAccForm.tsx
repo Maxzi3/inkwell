@@ -1,3 +1,4 @@
+import SpinnerMini from "../../ui/SpinnerMini";
 import { useDeleteMe } from "../Authentication/useDeleteMe";
 
 type Props = {
@@ -30,7 +31,13 @@ function DeleteAccForm({ onCloseModal }: Props) {
             disabled={isPending}
             className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-red-700 text-white text-sm font-medium hover:bg-red-800 transition disabled:opacity-50"
           >
-            Delete
+            {isPending ? (
+              <div className="flex justify-center">
+                <SpinnerMini />
+              </div>
+            ) : (
+              "Delete"
+            )}
           </button>
         </div>
       </div>

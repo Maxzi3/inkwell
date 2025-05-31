@@ -2,6 +2,7 @@ export interface Post  {
   _id: string;
   title: string;
   content: string;
+  category:string;
   image?: string;
   createdAt: string;
   author: {
@@ -14,9 +15,16 @@ export interface Post  {
   bookmarks: string[];
   comment: string[];
 }
+export interface Draft {
+  _id: string;
+  title: string;
+  content: string;
+  image?: string;
+  slug: string;
+}
   
   export interface Comment {
-    id: string;
+    _id: string;
     postId: string;
     content: string;
     author: string;

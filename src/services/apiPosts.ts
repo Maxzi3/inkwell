@@ -1,5 +1,18 @@
 import api from "./api";
 
+export interface PostUpdatePayload {
+  title?: string;
+  content?: string;
+  image?: string;
+  category?:string
+}
+export interface EditDraftPayload {
+  title?: string;
+  content?: string;
+  image?: string;
+}
+
+
 // GET all posts
 export const getPosts = async () => {
   const res = await api.get("/posts");
@@ -23,17 +36,25 @@ export const getPostBySlug = async (slug: string) => {
   return res.data.data;
 };
 // UPDATE a post
-export const updatePost = async (postId: string, update: string) => {
-  const res = await api.patch(`/posts/${postId}`, update);
+export const updatePost = async (postId: string, updateData: PostUpdatePayload) => {
+  const res = await api.patch(`/posts/${postId}`, updateData);
   return res.data.data;
 };
+
+export async function editDraftById(draftId: string, payload: EditDraftPayload) {
+  const { data } = await api.patch(`/posts/drafts/${draftId}`, payload);
+return data;
+}
 
 // DELETE a post by ID
 export const deletePostId = async (postId: string) => {
   const res = await api.delete(`/posts/${postId}`);
   return res.data;
 };
-
+// DELETE a draft by ID
+export async function deleteDraftById(draftId: string): Promise<void> {
+  await api.delete(`/posts/drafts/${draftId}`);
+}
 // LIKE a post
 export const likePost = async (postId: string) => {
   const res = await api.patch(`/posts/${postId}/like`);
@@ -47,8 +68,8 @@ export const bookmarkPost = async (postId: string) => {
 };
 
 // PUBLISH a draft
-export const publishDraft = async (postId: string) => {
-  const res = await api.patch(`/posts/${postId}/publishDraft`);
+export const publishDraft = async (draftId: string) => {
+  const res = await api.patch(`/posts/${draftId}/publishDraft`);
   return res.data.data;
 };
 
