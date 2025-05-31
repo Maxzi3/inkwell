@@ -23,6 +23,7 @@ import UserPostsPage from "./pages/UserPostsPage";
 import NewPostPage from "./pages/NewPostPage";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,88 +49,20 @@ const App = () => {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/posts/:slug" element={<PostDetail />} />
-          <Route
-            path="/updatedata"
-            element={
-              <ProtectedRoute>
-                <UpdatePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/drafts"
-            element={
-              <ProtectedRoute>
-                <DraftsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/bookmarks"
-            element={
-              <ProtectedRoute>
-                <BookmarksPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/likes"
-            element={
-              <ProtectedRoute>
-                <LikesPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/notification"
-            element={
-              <ProtectedRoute>
-                <NotificationPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/createpost"
-            element={
-              <ProtectedRoute>
-                <NewPostPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route element={<ProtectedRoute />} >
+            <Route path="/updatedata" element={<UpdatePage />} />
+            <Route path="/drafts" element={<DraftsPage />} />
+            <Route path="/bookmarks" element={<BookmarksPage />} />
+            <Route path="/likes" element={<LikesPage />} />
+            <Route path="/notification" element={<NotificationPage />} />
+            <Route path="/createpost" element={<NewPostPage />} />
 
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          >
-            <Route
-              path="/profile/likes"
-              element={
-                <ProtectedRoute>
-                  <LikesPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile/bookmarks"
-              element={
-                <ProtectedRoute>
-                  <BookmarksPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile/drafts"
-              element={
-                <ProtectedRoute>
-                  <DraftsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/profile/userposts" element={<UserPostsPage />} />
+            <Route path="/profile" element={<ProfilePage />}>
+              <Route path="/profile/likes" element={<LikesPage />} />
+              <Route path="/profile/bookmarks" element={<BookmarksPage />} />
+              <Route path="/profile/drafts" element={<DraftsPage />} />
+              <Route path="/profile/userposts" element={<UserPostsPage />} />
+            </Route>
           </Route>
         </Route>
       </Route>
@@ -137,17 +70,19 @@ const App = () => {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster
-        position="top-right" // You can customize this
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: "#333",
-            color: "#fff",
-          },
-        }}
-      />
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <Toaster
+          position="top-right" // You can customize this
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: "#333",
+              color: "#fff",
+            },
+          }}
+        />
+        <RouterProvider router={router} />
+      </AuthProvider>
     </QueryClientProvider>
   );
 };

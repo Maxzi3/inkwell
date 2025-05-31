@@ -15,12 +15,11 @@ function UpdatePasswordForm() {
     reset,
   } = useForm<PasswordUpdateValues>();
 
-  const { mutate: updatePassword, isPending } = useUpdatePassword();
+  const { mutate: updatePassword, isPending} = useUpdatePassword();
+
 
   const onSubmit = (data: PasswordUpdateValues) => {
-    updatePassword(data, {
-      onSettled: () => reset(),
-    });
+    updatePassword(data);
   };
 
   return (
@@ -36,6 +35,7 @@ function UpdatePasswordForm() {
         <FormInput
           type="password"
           id="passwordCurrent"
+          togglePassword
           disabled={isPending}
           {...register("passwordCurrent", {
             required: "This field is required",

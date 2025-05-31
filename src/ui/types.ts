@@ -8,6 +8,8 @@ export interface Post  {
     fullName: string;
     avatar: string;
   };
+  views:number;
+  slug:string;
   likes: string[];
   bookmarks: string[];
   comment: string[];

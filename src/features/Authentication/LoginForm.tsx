@@ -18,7 +18,7 @@ function LoginForm() {
   const { mutate: login, isPending, error } = useLogin();
   const { mutate: resend, isPending: isResending } = useResendEmail();
   const handleClick = () => {
-    navigate(-1); // go back
+    navigate("/"); 
   };
 
   const toastShownRef = useRef(false);

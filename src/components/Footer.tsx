@@ -6,17 +6,17 @@ import {
 } from "react-icons/hi2";
 import { Link, NavLink } from "react-router-dom";
 import { HiOutlineBookmark } from "react-icons/hi";
+import { useAuth } from "../contexts/AuthContext";
 
 const Footer = () => {
+   const { isAuthenticated, isLoading } = useAuth();
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? "text-secondary" : "text-gray-400 hover:text-blue-600";
-
-  const IsAuthenticated = true;
-
+  if (isLoading || isAuthenticated === undefined) return null;
   return (
     <div className="fixed bottom-0 left-0 shadow-t-md w-full py-2 border-t border-gray-300 opacity-95 backdrop-blur-md">
       <ul className="md:hidden flex justify-between items-center px-5 py-2 text-2xl">
-        {IsAuthenticated ? (
+        {isAuthenticated ? (
           <>
             <NavLink to="/" className={getLinkClass}>
               <HiOutlineHome />
@@ -27,19 +27,15 @@ const Footer = () => {
             <NavLink to="/createpost" className={getLinkClass}>
               <HiOutlinePlus className="text-3xl" />
             </NavLink>
-            <NavLink to='/notification' className={getLinkClass}>
+            <NavLink to="/notification" className={getLinkClass}>
               <HiOutlineBell />
             </NavLink>
-            <NavLink
-              to="/profile/userposts"
-              className={getLinkClass}
-            >
+            <NavLink to="/profile/userposts" className={getLinkClass}>
               <HiOutlineUser />
             </NavLink>
           </>
         ) : (
           <div className="flex justify-between flex-1 gap-3">
-
             <Link
               to="/login"
               className="bg-secondary text-primary hover:text-secondary hover:bg-input flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em]"
@@ -53,7 +49,6 @@ const Footer = () => {
               Sign Up
             </Link>
           </div>
-
         )}
       </ul>
     </div>

@@ -26,10 +26,6 @@ export interface ResetPayload {
   passwordConfirm: string;
 }
 
-export async function checkAuthStatus() {
-  const { data } = await api.get('/users/check-auth');
-  return data;
-}
 
 export async function loginUser(payload: AuthPayload) {
   const { data } = await api.post('/auth/login', payload);
@@ -47,7 +43,7 @@ export async function signupUser(payload: SignupPayload) {
 }
 
 export async function updateMyPassword(payload: PasswordUpdatePayload) {
-  const { data } = await api.patch('/auth/updateMyPassword', payload);
+  const { data } = await api.patch("/auth/updateMyPassword", payload);
   return data;
 }
 

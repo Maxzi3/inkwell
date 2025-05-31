@@ -4,42 +4,50 @@ import Spinner from "../ui/Spinner";
 import { useGetMe } from "../features/User/useGetMe";
 import { formatDate } from "../ui/helpers";
 
-
-
 const ProfilePageDesktop = () => {
-  const { data: user, isPending, isError } = useGetMe();
-  console.log(user, isPending, isError);
-  const isLoading = false
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/updatedata");
-  };
+  const { data:user, isPending, isError } = useGetMe();
+  
+  const handleClick = () => navigate("/updatedata");
 
+  if (isPending) {
+    return (
+      <div className="px-4 py-8 flex justify-center">
+        <Spinner />
+      </div>
+    );
+  }
 
-  if (isLoading) return (
-    <div className="px-4 py-8 ">
-      <Spinner />
-    </div>
-  );
+  if (isError || !user) {
+    return (
+      <div className="px-4 py-8 text-center text-red-600">
+        Failed to load user data.
+      </div>
+    );
+  }
+
+  const getValueOrNil = (value?: string) => value || "N/A";
 
   const emailStatusBadge = {
     pending: "bg-blue-100 text-blue-800",
     verified: "bg-green-100 text-green-800",
     cancelled: "bg-red-100 text-red-800",
   };
-  const getValueOrNil = (value) => value || "N/A";
 
+  const emailStatus =
+    emailStatusBadge[user.emailVerified as keyof typeof emailStatusBadge] ||
+    "bg-gray-100 text-gray-800";
 
   return (
-    <div className=" px-4 py-8 md:w-[600px] w-full mx-auto">
+    <div className="px-4 py-8 md:w-[600px] w-full mx-auto">
       <h1 className="text-2xl font-bold mb-6 text-center">Your Profile</h1>
 
       {/* Profile Image */}
       <div className="flex justify-center mb-6 z-10">
         <img
-          src=""
-          alt="test"
-          className="relative z-0 w-24 h-24 rounded-full  border-2 border-blue-500"
+          src={user.avatar}
+          alt={user.fullName}
+          className="relative z-0 w-24 h-24 rounded-full border-2 border-blue-500 object-cover"
         />
       </div>
 
@@ -51,44 +59,44 @@ const ProfilePageDesktop = () => {
         </div>
         <div className="flex justify-between items-center border-b pb-2">
           <span className="font-medium">Username:</span>
-          <span>test1</span>
+          <span>@{getValueOrNil(user.username)}</span>
         </div>
         <div className="flex justify-between items-center border-b pb-2">
           <span className="font-medium">Bio:</span>
-          <span>test1</span>
+          <span>{getValueOrNil(user.bio)}</span>
         </div>
         <div className="flex justify-between items-center border-b pb-2">
           <span className="font-medium">Email:</span>
-          <span>test@gmail.com</span>
+          <span>{getValueOrNil(user.email)}</span>
         </div>
         <div className="flex justify-between items-center border-b pb-2">
           <span className="font-medium">Phone:</span>
-          <span>{user.phoneNumber}</span>
+          <span>{getValueOrNil(user.phoneNumber)}</span>
         </div>
         <div className="flex justify-between items-center border-b pb-2">
           <span className="font-medium w-1/2 shrink-0">Address:</span>
-          <span className="text-right max-w-[60%]">Lagos Nigeria</span>
+          <span className="text-right max-w-[60%]">
+            {getValueOrNil(user.address)}
+          </span>
         </div>
         <div className="flex justify-between items-center border-b pb-2">
           <span className="font-medium">Date Joined:</span>
-          <span></span>
+          <span>{formatDate(user.createdAt)}</span>
         </div>
 
         {/* Email Verification Status */}
         <div className="flex justify-between items-center border-b pb-2">
           <span className="font-medium">Email Verified:</span>
           <span
-            className={`px-2 py-1 rounded-full text-xs font-semibold capitalize  ||
-              "bg-gray-100 text-gray-800"
-              }`}
+            className={`px-2 py-1 rounded-full text-xs font-semibold capitalize ${emailStatus}`}
           >
-            pending
+            {user.emailVerified}
           </span>
         </div>
 
         <button
           onClick={handleClick}
-          className="flex items-center gap-3 bg-blue-600 text-white  md:w-auto px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+          className="flex items-center gap-3 bg-blue-600 text-white md:w-auto px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
         >
           Update Profile
           <HiArrowRight />

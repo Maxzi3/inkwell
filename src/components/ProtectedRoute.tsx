@@ -1,28 +1,20 @@
-import { Navigate, useLocation } from "react-router-dom";
-import { useEffect, type ReactNode} from "react";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import Spinner from "../ui/Spinner";
 
-import toast from "react-hot-toast";
-import { accessToken } from "../services/api";
-
-interface ProtectedRouteProps {
-  children: ReactNode;
-}
-
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const location = useLocation();
-  const isAuthenticated = !!accessToken;
+const ProtectedRoute = () => {
+  const { isAuthenticated, isLoading } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      toast.error("You must be logged in to view this page");
-    }
-  }, [isAuthenticated]);
+    if (!isLoading && !isAuthenticated) navigate("/login");
+  }, [isLoading, isAuthenticated, navigate]);
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
+  if (isLoading) return <Spinner />;
+  if (isAuthenticated) return <Outlet />;
 
-  return <>{children}</>;
+  return null;
 };
 
 export default ProtectedRoute;
