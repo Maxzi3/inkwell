@@ -17,7 +17,7 @@ export { accessToken };
 // Add Authorization header to every request
 api.interceptors.request.use(config => {
   if (accessToken && config.headers) {
-    console.log('🔐 Using access token:', accessToken)
+    // console.log('🔐 Using access token:', accessToken)
     config.headers.Authorization = `Bearer ${accessToken}`
   }
   return config

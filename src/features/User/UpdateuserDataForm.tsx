@@ -260,7 +260,7 @@ function UpdateUserDataForm() {
           onChange={handleAvatarChange}
           ref={fileInputRef}
           disabled={isUpdating}
-          className="w-full p-3 border border-gray-300 rounded-md file:border-0 disabled:bg-input hover:text-secondary hover:bg-inpu file:bg-secondary file:text-primary file:px-4 file:py-2 file:rounded-md file:cursor-pointer"
+          className="w-full p-3 border border-gray-300 rounded-md file:border-0 disabled:bg-input hover:text-secondary hover:bg-input file:bg-secondary file:text-primary file:px-4 file:py-2 file:rounded-md file:cursor-pointer"
         />
         {preview && (
           <button

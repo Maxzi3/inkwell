@@ -1,77 +1,131 @@
-import { useRef, useState, } from "react";
-import type { ChangeEvent, FormEvent } from "react";
+import { useState, useRef, ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
 import { HiPlus } from "react-icons/hi2";
-import FormInput from "../ui/FormInput";
 import { FiX } from "react-icons/fi";
+import { toast } from "react-hot-toast";
 
-// interface CreatePostFormProps {
-//   onSubmitPost: (formData: FormData) => void;
-// }
+import FormInput from "../ui/FormInput";
+import SpinnerMini from "../ui/SpinnerMini";
+import { useCreatePost } from "../features/Post/useCreatePost";
+import { useCreateDraft } from "../features/Drafts/useCreateDraft";
+import type { CreateDraftInput } from "../services/apiPosts";
 
 const categories = ["Technology", "Lifestyle", "Education", "Business"];
 
+type FormValues = Omit<CreateDraftInput, "image"> & {
+  image?: FileList;
+};
+
 const CreatePostForm = () => {
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
-  const [content, setContent] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const fileInputRef = useRef();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors },
+    setValue,
+  } = useForm<FormValues>({
+    defaultValues: {
+      title: "",
+      content: "",
+      category: "",
+    },
+  });
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const { mutate: createPost, isPending: isCreating } = useCreatePost();
+  const { mutate: createDraft, isPending: isDrafting } = useCreateDraft();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImageFile(e.target.files[0]);
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image.");
+      e.target.value = "";
+      setValue("image", undefined); // clear form value
+      setPreview(null);
+      return;
     }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size exceeds 5MB.");
+      e.target.value = "";
+      setValue("image", undefined);
+      setPreview(null);
+      return;
+    }
+
+    setValue("image", e.target.files); // update form value
+
+    const reader = new FileReader();
+    reader.onloadend = () => setPreview(reader.result as string);
+    reader.readAsDataURL(file);
   };
 
-  // const handleSubmit = (e: FormEvent) => {
-  //   e.preventDefault();
+  const handleClearImage = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    setValue("image", undefined);
+    setPreview(null);
+  };
 
-  //   const formData = new FormData();
-  //   formData.append("title", title);
-  //   formData.append("category", category);
-  //   formData.append("content", content);
-  //   if (imageFile) formData.append("image", imageFile);
+  const onSubmit = (data: FormValues) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("category", data.category);
+    formData.append("content", data.content);
+    if (data.image?.[0]) formData.append("image", data.image[0]);
 
-  //   onSubmitPost(formData);
+    createPost(formData);
+    reset();
+    setPreview(null);
+  };
 
-  //   //  clear form after submission
-  //   setTitle("");
-  //   setContent("");
-  //   setCategory("");
-  //   setImageFile(null);
-  // };
+  const onSaveDraft = (data: FormValues) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("category", data.category);
+    formData.append("content", data.content);
+    if (data.image?.[0]) formData.append("image", data.image[0]);
+
+    createDraft(formData);
+    reset();
+    setPreview(null);
+  };
+
+  const isBusy = isSubmitting || isCreating || isDrafting;
 
   return (
     <form
-      // onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="md:w-[600px] mx-auto flex flex-col justify-center p-8 rounded-lg space-y-6 text-sm md:border border-gray-200"
     >
-      <h2 className="text-2xl font-semibold text-center  ">
-        Create New Post
-      </h2>
+      <h2 className="text-2xl font-semibold text-center">Create New Post</h2>
 
+      {/* Title */}
       <div>
-        <label htmlFor="title" className="block text-sm font-medium ">
+        <label htmlFor="title" className="block text-sm font-medium">
           Title
         </label>
         <FormInput
           type="text"
           id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
+          disabled={isBusy}
+          {...register("title", { required: "Title is required" })}
         />
+        {errors.title && <p className="text-red-600">{errors.title.message}</p>}
       </div>
 
+      {/* Category */}
       <div>
-        <label className="block text-sm font-medium ">
-          Category
-        </label>
+        <label className="block text-sm font-medium">Category</label>
         <select
-          className="w-full mt-1 p-2 border-none border-text-primary bg-input focus:ring-blue-500 transition-all duration-300 placeholder:text-text-primary flex  mx-auto overflow-hidden  focus:outline-0 focus:ring-0 h-full text-base font-normal leading-normal disabled:bg-gray-500 "
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
+          className="w-full mt-1 p-2 bg-input border-none text-base disabled:bg-gray-500"
+          {...register("category", { required: "Category is required" })}
+          disabled={isBusy}
         >
           <option value="" disabled>
             Select a category
@@ -82,65 +136,82 @@ const CreatePostForm = () => {
             </option>
           ))}
         </select>
+        {errors.category && (
+          <p className="text-red-600">{errors.category.message}</p>
+        )}
       </div>
 
+      {/* Content */}
       <div>
-        <label className="block text-sm font-medium">
-          Content
-        </label>
+        <label className="block text-sm font-medium">Content</label>
         <textarea
-          className="w-full mt-1 p-2 border-none border-text-primary bg-input focus:ring-blue-500 transition-all duration-300 placeholder:text-text-primary flex  mx-auto overflow-hidden  focus:outline-0 focus:ring-0 h-40 text-base font-normal leading-normal disabled:bg-gray-500"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        ></textarea>
+          className="w-full mt-1 p-2 bg-input border-none h-40 text-base disabled:bg-gray-500"
+          {...register("content", { required: "Content is required" })}
+          disabled={isBusy}
+        />
+        {errors.content && (
+          <p className="text-red-600">{errors.content.message}</p>
+        )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-2" htmlFor="avatar">
+      {/* Image Upload */}
+      <div className="relative">
+        <label className="block text-sm font-medium mb-2" htmlFor="image">
           Upload Image
         </label>
-        <FormInput
+        <input
           type="file"
-          id="avatar"
+          id="image"
           accept="image/*"
+          {...register("image")}
           onChange={handleImageChange}
-          ref={fileInputRef}
-          // disabled={isUpdating}
-          className="w-full p-3 pr-10 border border-gray-300 rounded-md file:border-0 file:bg-black dark:file:bg-gray-800 file:text-white file:px-4 file:py-2 file:rounded-md file:cursor-pointer disabled:cursor-not-allowed"
+          ref={(e) => {
+            fileInputRef.current = e;
+            register("image").ref(e);
+          }}
+          disabled={isBusy}
+          className="w-full p-3 pr-10 border border-gray-300 rounded-md file:border-0 disabled:bg-input hover:text-secondary hover:bg-input file:bg-secondary file:text-primary file:px-4 file:py-2 file:rounded-md file:cursor-pointer"
         />
-        {imageFile && (
-          <button
-            type="button"
-            onClick={() => {
-              setImageFile(null);
-              fileInputRef.current.value = null;
-            }}
-            className="relative bottom-[2.8rem] left-[12rem] -translate-y-1/2  text-red-600 p-1 rounded-full hover:bg-red-100 transition-all"
-            aria-label="Remove image"
-          >
-            <FiX size={18} />
-          </button>
-        )}
 
-        {imageFile && (
-          <div className="mt-2">
-            <img
-              src={URL.createObjectURL(imageFile)}
-              alt="Preview"
-              className="h-40 rounded object-cover"
-            />
-          </div>
+        {preview && (
+          <>
+            <button
+              type="button"
+              onClick={handleClearImage}
+              className="absolute right-2 top-[3.5rem] -translate-y-1/2 text-red-600 p-1 rounded-full hover:bg-red-100"
+            >
+              <FiX size={18} />
+            </button>
+            <div className="mt-2">
+              <img
+                src={preview}
+                alt="Preview"
+                className="h-40 rounded object-cover"
+              />
+            </div>
+          </>
         )}
       </div>
 
-      <button
-        type="submit"
-        className=" w-[100px] flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
-      >
-        <HiPlus className="text-xl" />
-        Post
-      </button>
+      {/* Buttons */}
+      <div className="flex justify-between w-full">
+        <button
+          type="submit"
+          className="w-[100px] flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+        >
+          <HiPlus className="text-xl" />
+          {isCreating ? <SpinnerMini /> : "Post"}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleSubmit(onSaveDraft)}
+          className="w-[150px] flex items-center justify-center gap-2 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition"
+        >
+          <HiPlus className="text-xl" />
+          {isDrafting ? <SpinnerMini /> : "Save As Draft"}
+        </button>
+      </div>
     </form>
   );
 };

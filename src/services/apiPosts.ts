@@ -4,14 +4,19 @@ export interface PostUpdatePayload {
   title?: string;
   content?: string;
   image?: string;
-  category?:string
+  category?: string;
 }
 export interface EditDraftPayload {
   title?: string;
   content?: string;
   image?: string;
 }
-
+export interface  CreateDraftInput {
+  title: string;
+  content: string;
+  category: string;
+  image?: string;
+};
 
 // GET all posts
 export const getPosts = async () => {
@@ -20,13 +25,12 @@ export const getPosts = async () => {
 };
 
 // CREATE a new post (you had postId here but didn’t send actual post data)
-export const createPost = async (post: {
-  title: string;
-  content: string;
-  category: string;
-  image?: string;
-}) => {
-  const res = await api.post("/posts", post);
+export const createPost = async (formData: FormData) => {
+  const res = await api.post("/posts", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 
@@ -36,14 +40,20 @@ export const getPostBySlug = async (slug: string) => {
   return res.data.data;
 };
 // UPDATE a post
-export const updatePost = async (postId: string, updateData: PostUpdatePayload) => {
+export const updatePost = async (
+  postId: string,
+  updateData: PostUpdatePayload
+) => {
   const res = await api.patch(`/posts/${postId}`, updateData);
   return res.data.data;
 };
 
-export async function editDraftById(draftId: string, payload: EditDraftPayload) {
+export async function editDraftById(
+  draftId: string,
+  payload: EditDraftPayload
+) {
   const { data } = await api.patch(`/posts/drafts/${draftId}`, payload);
-return data;
+  return data;
 }
 
 // DELETE a post by ID
@@ -92,7 +102,12 @@ export const getLikes = async () => {
 };
 
 // CREATE a new draft
-export const createDraft = async () => {
-  const res = await api.post("/posts/draft");
+export const createDraft = async (formData: FormData) => {
+  console.log(formData)
+  const res = await api.post("/posts/draft", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };

@@ -72,7 +72,7 @@ const PostDetail = () => {
       <h1 className="text-2xl font-bold mb-4 capitalize underline underline-offset-8">{post.title}</h1>
 
       {/* Thumbnail */}
-      {post.thumbnail && (
+      {post.image && (
         <img
           src={post.image}
           alt={post.title}
