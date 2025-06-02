@@ -26,11 +26,15 @@ export const getPosts = async () => {
 
 // CREATE a new post (you had postId here but didn’t send actual post data)
 export const createPost = async (formData: FormData) => {
+  for (const pair of formData.entries()) {
+    console.log(`${pair[0]}:`, pair[1]);
+  }
   const res = await api.post("/posts", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+  console.log(res.data);
   return res.data;
 };
 

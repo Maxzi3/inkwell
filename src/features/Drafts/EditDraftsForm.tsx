@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useEditDraft } from "./useEditDrafts";
 import type { EditDraftPayload } from "../../services/apiPosts";
 import type { Draft } from "../../ui/types";
+import { FiX } from "react-icons/fi";
 
 interface EditDraftFormProps {
   draft: Draft;
@@ -10,24 +11,47 @@ interface EditDraftFormProps {
 }
 
 const EditDraftsForm = ({ draft, onCloseModal }: EditDraftFormProps) => {
-  const { register, handleSubmit, reset } = useForm<EditDraftPayload>({
-    defaultValues: {
-      title: draft.title,
-      content: draft.content,
-      image: draft.image,
-    },
-  });
+  const { register, handleSubmit, reset, setValue } = useForm<EditDraftPayload>(
+    {
+      defaultValues: {
+        title: draft.title,
+        content: draft.content,
+        image: draft.image,
+      },
+    }
+  );
 
   const { mutate: editDraft, isPending } = useEditDraft();
+  const [previewImage, setPreviewImage] = useState<string | null>(
+    draft.image || null
+  );
 
-  
   useEffect(() => {
     reset({
       title: draft.title,
       content: draft.content,
       image: draft.image,
     });
+    setPreviewImage(draft.image || null);
   }, [draft, reset]);
+
+  // Handle file input
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string);
+      setValue("image", reader.result as string); // store base64 string in form
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveImage = () => {
+    setPreviewImage(null);
+    setValue("image", "");
+  };
 
   const onSubmit = (data: EditDraftPayload) => {
     editDraft(
@@ -41,21 +65,44 @@ const EditDraftsForm = ({ draft, onCloseModal }: EditDraftFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-sm">
       <div>
-        <label>Title</label>
+        <label className="block mb-1 font-medium">Title</label>
         <input {...register("title")} className="w-full border p-2 rounded" />
       </div>
 
       <div>
-        <label>Content</label>
+        <label className="block mb-1 font-medium">Content</label>
         <textarea
           {...register("content")}
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded h-32 resize-y"
         />
       </div>
 
       <div>
-        <label>Thumbnail URL</label>
-        <input {...register("image")} className="w-full border p-2 rounded" />
+        <label className="block mb-2 font-medium">Image</label>
+
+        {previewImage ? (
+          <div className="relative group w-fit">
+            <img
+              src={previewImage}
+              alt="Draft preview"
+              className="w-40 h-28 object-cover rounded border"
+            />
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="absolute top-1 right-1  text-red-600 p-1 rounded-full hover:bg-red-100"
+            >
+              <FiX size={18} />
+            </button>
+          </div>
+        ) : (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="block w-full text-sm text-gray-700"
+          />
+        )}
       </div>
 
       <div className="flex justify-end gap-4 pt-2">

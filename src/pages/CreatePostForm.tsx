@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiPlus } from "react-icons/hi2";
 import { FiX } from "react-icons/fi";
@@ -8,99 +8,118 @@ import FormInput from "../ui/FormInput";
 import SpinnerMini from "../ui/SpinnerMini";
 import { useCreatePost } from "../features/Post/useCreatePost";
 import { useCreateDraft } from "../features/Drafts/useCreateDraft";
-import type { CreateDraftInput } from "../services/apiPosts";
 
 const categories = ["Technology", "Lifestyle", "Education", "Business"];
 
-type FormValues = Omit<CreateDraftInput, "image"> & {
+type FormValues = {
+  title: string;
+  category: string;
+  content: string;
   image?: FileList;
 };
 
 const CreatePostForm = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting, errors },
-    setValue,
-  } = useForm<FormValues>({
-    defaultValues: {
-      title: "",
-      content: "",
-      category: "",
-    },
-  });
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
   const { mutate: createPost, isPending: isCreating } = useCreatePost();
   const { mutate: createDraft, isPending: isDrafting } = useCreateDraft();
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const isBusy = isCreating || isDrafting;
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    setError,
+    getValues,
+    formState: { errors },
+  } = useForm<FormValues>();
+
+  const handleImagePreview = (file?: File) => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error("Please select a valid image.");
-      e.target.value = "";
-      setValue("image", undefined); // clear form value
-      setPreview(null);
+      toast.error("Only image files are allowed.");
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image size exceeds 5MB.");
-      e.target.value = "";
-      setValue("image", undefined);
-      setPreview(null);
+      toast.error("Image size must be less than 5MB.");
       return;
     }
-
-    setValue("image", e.target.files); // update form value
 
     const reader = new FileReader();
     reader.onloadend = () => setPreview(reader.result as string);
     reader.readAsDataURL(file);
   };
 
-  const handleClearImage = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+  const onSubmit = (data: FormValues, isDraft = false) => {
+    if (!isDraft) {
+      let hasError = false;
+
+      if (!data.title) {
+        setError("title", { message: "Title is required" });
+        hasError = true;
+      }
+
+      if (!data.category) {
+        setError("category", { message: "Category is required" });
+        hasError = true;
+      }
+
+      if (!data.content || data.content.length < 20) {
+        setError("content", {
+          message: "Content must be at least 20 characters",
+        });
+        hasError = true;
+      }
+
+      if (hasError) return;
     }
+
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("category", data.category);
+    formData.append("content", data.content);
+    if (data.image?.[0]) formData.append("image", data.image[0]);
+
+    if (isDraft) {
+      createDraft(formData);
+    } else {
+      createPost(formData);
+    }
+
+    reset();
+    setPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (e.target.files) {
+      setValue("image", e.target.files);
+    }
+    handleImagePreview(file);
+  };
+
+  const handleClearImage = () => {
     setValue("image", undefined);
+    if (fileInputRef.current) fileInputRef.current.value = "";
     setPreview(null);
   };
 
-  const onSubmit = (data: FormValues) => {
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("category", data.category);
-    formData.append("content", data.content);
-    if (data.image?.[0]) formData.append("image", data.image[0]);
-
-    createPost(formData);
-    reset();
-    setPreview(null);
+  const handleDraftSave = () => {
+    const values = getValues();
+    onSubmit(values, true); // true = isDraft
   };
-
-  const onSaveDraft = (data: FormValues) => {
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("category", data.category);
-    formData.append("content", data.content);
-    if (data.image?.[0]) formData.append("image", data.image[0]);
-
-    createDraft(formData);
-    reset();
-    setPreview(null);
-  };
-
-  const isBusy = isSubmitting || isCreating || isDrafting;
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((data) => onSubmit(data, false))}
       className="md:w-[600px] mx-auto flex flex-col justify-center p-8 rounded-lg space-y-6 text-sm md:border border-gray-200"
     >
       <h2 className="text-2xl font-semibold text-center">Create New Post</h2>
@@ -111,8 +130,8 @@ const CreatePostForm = () => {
           Title
         </label>
         <FormInput
-          type="text"
           id="title"
+          type="text"
           disabled={isBusy}
           {...register("title", { required: "Title is required" })}
         />
@@ -123,13 +142,11 @@ const CreatePostForm = () => {
       <div>
         <label className="block text-sm font-medium">Category</label>
         <select
-          className="w-full mt-1 p-2 bg-input border-none text-base disabled:bg-gray-500"
           {...register("category", { required: "Category is required" })}
           disabled={isBusy}
+          className="w-full mt-1 p-2 bg-input border-none text-base disabled:bg-gray-500"
         >
-          <option value="" disabled>
-            Select a category
-          </option>
+          <option value="">Select a category</option>
           {categories.map((cat) => (
             <option key={cat} value={cat}>
               {cat}
@@ -145,9 +162,15 @@ const CreatePostForm = () => {
       <div>
         <label className="block text-sm font-medium">Content</label>
         <textarea
-          className="w-full mt-1 p-2 bg-input border-none h-40 text-base disabled:bg-gray-500"
-          {...register("content", { required: "Content is required" })}
+          {...register("content", {
+            required: "Content is required",
+            minLength: {
+              value: 20,
+              message: "Content must be at least 20 characters",
+            },
+          })}
           disabled={isBusy}
+          className="w-full mt-1 p-2 bg-input border-none h-40 text-base disabled:bg-gray-500"
         />
         {errors.content && (
           <p className="text-red-600">{errors.content.message}</p>
@@ -156,19 +179,15 @@ const CreatePostForm = () => {
 
       {/* Image Upload */}
       <div className="relative">
-        <label className="block text-sm font-medium mb-2" htmlFor="image">
+        <label htmlFor="image" className="block text-sm font-medium mb-2">
           Upload Image
         </label>
         <input
           type="file"
           id="image"
           accept="image/*"
-          {...register("image")}
+          ref={fileInputRef}
           onChange={handleImageChange}
-          ref={(e) => {
-            fileInputRef.current = e;
-            register("image").ref(e);
-          }}
           disabled={isBusy}
           className="w-full p-3 pr-10 border border-gray-300 rounded-md file:border-0 disabled:bg-input hover:text-secondary hover:bg-input file:bg-secondary file:text-primary file:px-4 file:py-2 file:rounded-md file:cursor-pointer"
         />
@@ -193,7 +212,7 @@ const CreatePostForm = () => {
         )}
       </div>
 
-      {/* Buttons */}
+      {/* Submit Buttons */}
       <div className="flex justify-between w-full">
         <button
           type="submit"
@@ -205,7 +224,7 @@ const CreatePostForm = () => {
 
         <button
           type="button"
-          onClick={handleSubmit(onSaveDraft)}
+          onClick={handleDraftSave}
           className="w-[150px] flex items-center justify-center gap-2 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition"
         >
           <HiPlus className="text-xl" />
