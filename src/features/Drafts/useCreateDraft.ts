@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createDraft} from "../../services/apiPosts";
 import { toast } from "react-hot-toast";
+import { isAxiosError } from "axios";
 
 export const useCreateDraft = () => {
   const queryClient = useQueryClient();
@@ -12,8 +13,13 @@ export const useCreateDraft = () => {
       queryClient.invalidateQueries({ queryKey: ["drafts"] });
     },
     onError: (error: Error) => {
-      console.log(error);
-      toast.error(error.message);
+      let message = "Something went wrong";
+
+      if (isAxiosError(error)) {
+        message = error.response?.data?.message || message;
+      }
+
+      toast.error(message);
     },
   });
 };

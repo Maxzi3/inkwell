@@ -49,17 +49,17 @@ const App = () => {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/posts/:slug" element={<PostDetail />} />
-          <Route element={<ProtectedRoute />} >
+          <Route element={<ProtectedRoute />}>
             <Route path="/updatedata" element={<UpdatePage />} />
             <Route path="/drafts" element={<DraftsPage />} />
             <Route path="/bookmarks" element={<BookmarksPage />} />
             <Route path="/likes" element={<LikesPage />} />
+            <Route path="/userposts" element={<UserPostsPage />} />
             <Route path="/notification" element={<NotificationPage />} />
             <Route path="/createpost" element={<NewPostPage />} />
 
             <Route path="/profile" element={<ProfilePage />}>
               <Route path="/profile/likes" element={<LikesPage />} />
-              <Route path="/profile/bookmarks" element={<BookmarksPage />} />
               <Route path="/profile/drafts" element={<DraftsPage />} />
               <Route path="/profile/userposts" element={<UserPostsPage />} />
             </Route>

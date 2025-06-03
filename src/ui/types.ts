@@ -22,7 +22,23 @@ export interface Draft {
   image?: string;
   slug: string;
 }
-  
+export interface Notification {
+  _id: string;
+  sender: {
+    _id: string;
+    fullName: string;
+    avatar: string;
+  };
+  type: "like" | "comment" ;
+  post?: {
+    _id: string;
+    title: string;
+    slug: string;
+  };
+  createdAt: string;
+  isRead: boolean;
+}
+
   export interface Comment {
     _id: string;
     postId: string;

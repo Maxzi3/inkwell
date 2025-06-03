@@ -18,7 +18,10 @@ function ConfirmAction({
       <h2 className="text-xl font-semibold">{title}</h2>
       <p>{message}</p>
       <div className="flex justify-end gap-2">
-        <button onClick={onCloseModal} className="btn">
+        <button
+          onClick={onCloseModal}
+          className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-gray-600 text-white text-sm font-medium hover:bg-gray-700 transition disabled:opacity-50"
+        >
           Cancel
         </button>
         <button
@@ -26,7 +29,7 @@ function ConfirmAction({
             onConfirm();
             onCloseModal?.();
           }}
-          className="btn bg-red-600 text-white"
+          className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-red-700 text-white text-sm font-medium hover:bg-red-800 transition disabled:opacity-50"
         >
           {isPending ? (
             <div className="flex justify-center">

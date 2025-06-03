@@ -1,16 +1,20 @@
+import NotificationPage from "../../pages/NotificationPage";
+import Spinner from "../../ui/Spinner";
 import type { Post } from "../../ui/types";
-import { useGetMe } from "../User/useGetMe";
 import PostCard from "./PostCard";
-import { useGetPosts } from "./useGetUserPost";
+import { useGetPosts } from "./useGetPosts";
 
 const AllPosts = () => {
   const { data: postsData, isPending, isError } = useGetPosts();
-  const { data: user } = useGetMe();
 
   const posts: Post[] = postsData?.data || [];
 
   if (isPending) {
-    return <p className="text-center text-gray-500">Loading posts...</p>;
+    return (
+      <div className="px-4 py-8 flex justify-center">
+        <Spinner />
+      </div>
+    );
   }
 
   if (isError) {
@@ -28,10 +32,15 @@ const AllPosts = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-10 ">
-      {posts.map((post) => (
-        <PostCard key={post._id} post={post} currentUserId={user?.id || ""} />
-      ))}
+    <div className="flex justify-center">
+      <div className="grid grid-cols-1 mt-5 mb-10 md:border-none border-t border-t-border">
+        {posts.map((post) => (
+          <PostCard key={post._id} post={post} />
+        ))}
+      </div>
+      <div className="md:block fixed hidden right-3 top-20">
+        <NotificationPage />
+      </div>
     </div>
   );
 };

@@ -3,8 +3,10 @@ import {
   HiOutlineClipboardDocumentList,
   HiOutlineUserCircle,
   HiOutlineUser,
+  HiOutlineHome,
 } from "react-icons/hi2";
 import { MdOutlineRateReview } from "react-icons/md";
+import { HiOutlineClipboardList } from "react-icons/hi";
 
 // Utility function that uses the isActive flag from NavLink
 const getLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -16,17 +18,21 @@ const AccountNav = () => {
   return (
     <ul className="flex flex-col gap-2">
       <NavLink to="/" className={getLinkClass}>
-        <HiOutlineUser />
+        <HiOutlineHome />
         Home
       </NavLink>
       <NavLink to="/profile" className={getLinkClass}>
         <HiOutlineUser />
         Profile
       </NavLink>
+      <NavLink to="/userposts" className={getLinkClass}>
+        <HiOutlineClipboardList />
+        My Posts
+      </NavLink>
 
       <NavLink to="/createpost" className={getLinkClass}>
         <MdOutlineRateReview />
-        Create Post 
+        Create Post
       </NavLink>
 
       <NavLink to="/drafts" className={getLinkClass}>

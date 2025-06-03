@@ -7,9 +7,11 @@ import {
 import { Link, NavLink } from "react-router-dom";
 import { HiOutlineBookmark } from "react-icons/hi";
 import { useAuth } from "../contexts/AuthContext";
+import { useUnreadNotificationCount } from "../features/Notification/useUnreadNotificationCount";
 
 const Footer = () => {
    const { isAuthenticated, isLoading } = useAuth();
+   const { data: unreadCount = 0,} = useUnreadNotificationCount();
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? "text-secondary" : "text-gray-400 hover:text-blue-600";
   if (isLoading || isAuthenticated === undefined) return null;
@@ -29,6 +31,11 @@ const Footer = () => {
             </NavLink>
             <NavLink to="/notification" className={getLinkClass}>
               <HiOutlineBell />
+              {unreadCount > 0 && (
+                <span className="absolute bottom-9 right-[5.6rem] bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {unreadCount}
+                </span>
+              )}
             </NavLink>
             <NavLink to="/profile/userposts" className={getLinkClass}>
               <HiOutlineUser />

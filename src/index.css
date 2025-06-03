@@ -7,6 +7,7 @@
   --color-input: var(--input);
   --color-btnbg: var(--buttonbg);
   --color-btntxt: var(--buttontx);
+  --color-border: var(--border);
 }
 
 /* light mode by default */
@@ -18,17 +19,19 @@
   --input: #e7edf4;
   --buttonbg:#364153;
   --buttontx:#f8fafc;
+  --border:#364153;
 }
 
 /* dark mode overrides */
 .dark {
-  --text: #ffffff;
-  --text2: #ffffff;
+  --text: #f8fafc;
+  --text2: #f8fafc;
   --background: #101a23;
-  --background2: #ffffff;
+  --background2: #f8fafc;
   --input: #223649;
   --buttonbg:#f8fafc;
   --buttontx:#364153;
+  --border:#364153;
 }
 
 

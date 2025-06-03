@@ -1,18 +1,31 @@
-// import { Post } from "../types";
+import PostCard from "../features/Post/PostCard";
+import { useGetLikes } from "../features/Post/useGetLikes";
+import Spinner from "../ui/Spinner";
+import type { Post } from "../ui/types";
+import NotificationPage from "./NotificationPage";
 
-// interface LikesDisplayProps {
-//   likedPosts: Post[];
-// }
+const LikesPage = () => {
+  const { data, isPending, isError } = useGetLikes();
+  const likes: Post[] = data || [];
 
-const LikesPage = ({ likedPosts }: LikesDisplayProps) => {
+  if (isPending)
+    return (
+      <div className="px-4 py-8 flex justify-center">
+        <Spinner />
+      </div>
+    );
+  if (isError)
+    return <p className="text-center text-red-500">Failed to load bookmark.</p>;
+  if (!likes.length)
+    return <p className="text-center text-gray-500">No bookmark yet.</p>;
   return (
-    <div className="space-y-4">
-      {likedPosts.map((post) => (
-        <div key={post.id} className="p-4 bg-white dark:bg-gray-800 rounded shadow">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">{post.title}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Liked on {new Date(post.createdAt).toLocaleDateString()}</p>
-        </div>
+    <div className="space-y-4 mt-5 mb-[4.5rem] ">
+      {likes.map((post) => (
+        <PostCard key={post._id} post={post} />
       ))}
+      <div className="md:block fixed hidden right-3 top-20">
+        <NotificationPage />
+      </div>
     </div>
   );
 };

@@ -11,30 +11,30 @@ export interface EditDraftPayload {
   content?: string;
   image?: string;
 }
-export interface  CreateDraftInput {
+export interface CreateDraftInput {
   title: string;
   content: string;
   category: string;
   image?: string;
-};
+}
 
 // GET all posts
 export const getPosts = async () => {
   const res = await api.get("/posts");
   return res.data;
 };
+export const getUserPosts = async () => {
+  const res = await api.get("/posts/my/posts");
+  return res.data.data;
+};
 
 // CREATE a new post (you had postId here but didn’t send actual post data)
 export const createPost = async (formData: FormData) => {
-  for (const pair of formData.entries()) {
-    console.log(`${pair[0]}:`, pair[1]);
-  }
   const res = await api.post("/posts", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-  console.log(res.data);
   return res.data;
 };
 
@@ -71,14 +71,24 @@ export async function deleteDraftById(draftId: string): Promise<void> {
 }
 // LIKE a post
 export const likePost = async (postId: string) => {
-  const res = await api.patch(`/posts/${postId}/like`);
-  return res.data.data;
+  const res = await api.post(`/posts/${postId}/like`);
+  return res.data;
+};
+
+export const unlikePost = async (postId: string) => {
+  const res = await api.delete(`/posts/${postId}/like`);
+  return res.data;
 };
 
 // BOOKMARK a post
 export const bookmarkPost = async (postId: string) => {
-  const res = await api.patch(`/posts/${postId}/bookmark`);
-  return res.data.data;
+  const res = await api.post(`/posts/${postId}/bookmark`);
+  return res.data;
+};
+
+export const unbookmarkPost = async (postId: string) => {
+  const res = await api.delete(`/posts/${postId}/bookmark`);
+  return res.data;
 };
 
 // PUBLISH a draft
@@ -107,7 +117,6 @@ export const getLikes = async () => {
 
 // CREATE a new draft
 export const createDraft = async (formData: FormData) => {
-  console.log(formData)
   const res = await api.post("/posts/draft", formData, {
     headers: {
       "Content-Type": "multipart/form-data",

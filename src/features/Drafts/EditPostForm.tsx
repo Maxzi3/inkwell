@@ -1,49 +1,39 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useEditDraft } from "./useEditDrafts";
-import type { EditDraftPayload } from "../../services/apiPosts";
-import type { Draft } from "../../ui/types";
 import { FiX } from "react-icons/fi";
 
-interface EditDraftFormProps {
-  draft: Draft;
+interface EditFormProps<T> {
+  initialData: T;
   onCloseModal?: () => void;
+  onSubmitForm: (data: T) => void;
+  isPending: boolean;
 }
 
-const EditDraftsForm = ({ draft, onCloseModal }: EditDraftFormProps) => {
-  const { register, handleSubmit, reset, setValue } = useForm<EditDraftPayload>(
-    {
-      defaultValues: {
-        title: draft.title,
-        content: draft.content,
-        image: draft.image,
-      },
-    }
-  );
+function EditPostForm<
+  T extends { title: string; content: string; image?: string }
+>({ initialData, onCloseModal, onSubmitForm, isPending }: EditFormProps<T>) {
+  const { register, handleSubmit, reset, setValue } = useForm<T>({
+    defaultValues: initialData,
+  });
 
-  const { mutate: editDraft, isPending } = useEditDraft();
   const [previewImage, setPreviewImage] = useState<string | null>(
-    draft.image || null
+    initialData.image || null
   );
 
   useEffect(() => {
-    reset({
-      title: draft.title,
-      content: draft.content,
-      image: draft.image,
-    });
-    setPreviewImage(draft.image || null);
-  }, [draft, reset]);
+    reset(initialData);
+    setPreviewImage(initialData.image || null);
+  }, [initialData, reset]);
 
-  // Handle file input
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPreviewImage(reader.result as string);
-      setValue("image", reader.result as string); // store base64 string in form
+      const result = reader.result as string;
+      setPreviewImage(result);
+      setValue("image", result);
     };
     reader.readAsDataURL(file);
   };
@@ -53,13 +43,8 @@ const EditDraftsForm = ({ draft, onCloseModal }: EditDraftFormProps) => {
     setValue("image", "");
   };
 
-  const onSubmit = (data: EditDraftPayload) => {
-    editDraft(
-      { draftId: draft._id, payload: data },
-      {
-        onSuccess: onCloseModal,
-      }
-    );
+  const onSubmit = (data: T) => {
+    onSubmitForm(data);
   };
 
   return (
@@ -84,13 +69,13 @@ const EditDraftsForm = ({ draft, onCloseModal }: EditDraftFormProps) => {
           <div className="relative group w-fit">
             <img
               src={previewImage}
-              alt="Draft preview"
+              alt="Preview"
               className="w-40 h-28 object-cover rounded border"
             />
             <button
               type="button"
               onClick={handleRemoveImage}
-              className="absolute top-1 right-1  text-red-600 p-1 rounded-full hover:bg-red-100"
+              className="absolute top-1 right-1 text-red-600 p-1 rounded-full hover:bg-red-100"
             >
               <FiX size={18} />
             </button>
@@ -100,7 +85,7 @@ const EditDraftsForm = ({ draft, onCloseModal }: EditDraftFormProps) => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="block w-full text-sm text-gray-700"
+            className="w-full p-3 border border-gray-300 rounded-md"
           />
         )}
       </div>
@@ -118,11 +103,11 @@ const EditDraftsForm = ({ draft, onCloseModal }: EditDraftFormProps) => {
           disabled={isPending}
           className="bg-blue-600 text-white px-4 py-2 rounded"
         >
-          {isPending ? "Updating..." : "Update Draft"}
+          {isPending ? "Updating..." : "Update"}
         </button>
       </div>
     </form>
   );
-};
+}
 
-export default EditDraftsForm;
+export default EditPostForm;

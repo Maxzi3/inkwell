@@ -10,7 +10,6 @@ const ProfileNav = () => {
             <ul className="flex flex-row gap-8 w-9/12 p-3">
                 <NavLink to='/profile/userposts' className={getLinkClass}>Posts</NavLink>
                 <NavLink to='/profile/likes' className={getLinkClass}>Likes</NavLink>
-                <NavLink to='/profile/bookmarks' className={getLinkClass}>Bookmarks</NavLink>
                 <NavLink to='/profile/drafts' className={getLinkClass}>Drafts</NavLink>
             </ul>
         </div>
