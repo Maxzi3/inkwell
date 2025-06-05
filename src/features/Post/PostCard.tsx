@@ -8,20 +8,25 @@ import PostActions from "./PostActions";
 
 const PostCard = ({ post }: { post: Post }) => {
   return (
-    <div className="border-b border-b-border px-5 py-2 mb-4 md:w-6/10  w-full md:px-16 transition">
+    <div
+      className="border-b border-b-border px-5 py-2 mb-4 md:w-1/2  w-full md:px-16 transition"
+      data-post-wrapper
+    >
       <div className="flex flex-col items-baseline">
         {/* Header */}
-        <div className="flex items-center gap-3 text-sm mb-2">
-          <img
-            src={post.author.avatar}
-            className="w-8 h-8 rounded-full object-cover"
-            alt={post.author.fullName?.split(" ")[1]}
-          />
-          <span className="font-medium">
-            {post.author.fullName?.split(" ")[1]}
-          </span>
-          <span>•</span>
-          <span className="text-xs">{formatTimeAgo(post.createdAt)}</span>
+        <div className="flex justify-between items-center w-full">
+          <div className="flex justify-between items-center gap-3 text-sm mb-2">
+            <img
+              src={post.author.avatar}
+              className="w-8 h-8 rounded-full object-cover"
+              alt={post.author.fullName?.split(" ")[1]}
+            />
+            <span className="font-medium">
+              {post.author.fullName?.split(" ")[1]}
+            </span>
+            <span>•</span>
+            <span className="text-xs">{formatTimeAgo(post.createdAt)}</span>
+          </div>
           <PostActions post={post} />
         </div>
 

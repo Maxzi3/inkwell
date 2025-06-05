@@ -12,7 +12,7 @@ interface ModalContextType {
   isOpen: boolean;
 }
 
-const ModalContext = createContext<ModalContextType | null>(null);
+export const ModalContext = createContext<ModalContextType | null>(null);
 
 // Main Modal component
 interface ModalProps {
@@ -71,7 +71,7 @@ const Window: FC<WindowProps> = ({ children, name }: WindowProps) => {
   if (name !== openName) return null;
 
   return createPortal(
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[1000] flex items-center justify-center">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[1000] flex items-center justify-center overflow-hidden">
       <div
         ref={modalRef}
         className="relative text-text-primary bg-primary rounded-xl shadow-xl w-[90%] sm:w-full max-w-lg px-4 py-6 sm:p-8 animate-fadeIn mx-4"
@@ -79,7 +79,7 @@ const Window: FC<WindowProps> = ({ children, name }: WindowProps) => {
       >
         <button
           onClick={close}
-          className="absolute top-4 right-4 text-gray-500 hover:bg-gray-100 p-2 rounded"
+          className="absolute top-1 right-2 text-gray-500 hover:bg-gray-100 p-2  rounded"
         >
           <HiXMark className="w-6 h-6" />
         </button>

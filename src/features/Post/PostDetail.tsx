@@ -1,15 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetPostBySlug } from "./useGetPostBySlug";
 import { formatTimeAgo } from "../../ui/helpers";
-import {
-  FaArrowLeftLong,
-  FaEye,
-  FaRegComment,
-} from "react-icons/fa6";
+import { FaArrowLeftLong, FaEye, FaRegComment } from "react-icons/fa6";
 import type { JSX } from "react";
 import BookmarkButton from "../Bookmarks/BookmarkButton";
 import LikeButton from "./LikeButton";
 import Spinner from "../../ui/Spinner";
+import CommentForm from "../Comments/commentForm";
+import CommentList from "../Comments/CommentList";
 
 const IconWithCount = ({
   icon,
@@ -18,7 +16,7 @@ const IconWithCount = ({
   icon: JSX.Element;
   count: number;
 }) => (
-  <span className="flex items-center gap-1 text-gray-600">
+  <span className="flex items-center gap-1 ">
     {icon}
     {count}
   </span>
@@ -28,20 +26,21 @@ const PostDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { data: post, isPending, isError } = useGetPostBySlug(slug!);
+  
 
   const handleGoBack = () => navigate(-1);
 
-  if (isPending) return (
-    <div className="px-4 py-8 flex justify-center">
-      <Spinner />
-    </div>
-  );
+  if (isPending)
+    return (
+      <div className="px-4 py-8 flex justify-center">
+        <Spinner />
+      </div>
+    );
   if (isError || !post)
     return <p className="text-center text-red-500">Post not found.</p>;
 
-
   return (
-    <div className="px-4 pb-20 max-w-3xl mx-auto">
+    <div className="px-4 pb-20 max-w-3xl mx-auto space-y-4">
       {/* Back Button */}
       <button
         onClick={handleGoBack}
@@ -115,11 +114,13 @@ const PostDetail = () => {
         <LikeButton post={post} />
         <IconWithCount
           icon={<FaRegComment />}
-          count={post.comment?.length || 0}
+          count={post.comments?.length || 0}
         />
         <BookmarkButton post={post} />
         <IconWithCount icon={<FaEye />} count={post.views || 0} />
       </div>
+      <CommentForm postId={post._id} />
+      <CommentList postId={post._id} />
     </div>
   );
 };

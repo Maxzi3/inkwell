@@ -3,12 +3,12 @@ import { getMe } from "../../services/apiUser";
 import { useAuth } from "../../contexts/AuthContext";
 
 export function useGetMe() {
-    const { isAuthenticated, isLoading:authLoading } = useAuth();
+    const { isAuthenticated, isLoading: authLoading } = useAuth();
   return useQuery({
     queryKey: ["me"],
     queryFn: getMe,
     select: (data) => data.user,
     enabled:isAuthenticated && !authLoading,
-    retry: 1, // optional, depending on your app behavior
+    retry: 1, 
   });
 }

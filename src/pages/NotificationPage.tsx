@@ -6,7 +6,6 @@ import NotificationItem from "../features/Notification/NotificationItem";
 import type { Notification } from "../ui/types";
 import Spinner from "../ui/Spinner";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
-import { useUnreadNotificationCount } from "../features/Notification/useUnreadNotificationCount";
 import { useOutsideClick } from "../hooks/useOutsideMouseClick";
 
 
@@ -15,9 +14,10 @@ const NotificationPage = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data, isLoading } = useNotifications();
   const notifications: Notification[] = data || [];
+  const unreadCount = notifications?.filter((n) => !n.isRead).length || 0;
   const { mutate: markAllRead } = useMarkAllRead();
   const { mutate: markOneRead } = useMarkOneRead();
-  const { data: unreadCount = 0,} = useUnreadNotificationCount();
+
   useOutsideClick(() => setIsOpen(false));
 
   if (isLoading) {

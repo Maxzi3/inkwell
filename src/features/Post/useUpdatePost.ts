@@ -1,22 +1,31 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updatePost, type PostUpdatePayload } from '../../services/apiPosts'
-import { toast } from 'react-hot-toast'
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updatePost, type PostUpdatePayload } from "../../services/apiPosts";
+import { toast } from "react-hot-toast";
+import { isAxiosError } from "axios";
 
 export const useUpdatePost = () => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({
       postId,
-      data,
+      payload,
     }: {
       postId: string;
-      data: PostUpdatePayload;
-    }) => updatePost(postId, data),
+      payload: PostUpdatePayload;
+    }) => updatePost(postId, payload),
     onSuccess: () => {
       toast.success("Post updated");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
-    onError: (error: Error) => toast.error(error.message),
+    onError: (error: Error) => {
+      let message = "Failed to update post";
+
+      if (isAxiosError(error)) {
+        message = error.response?.data?.message || message;
+      }
+
+      toast.error(message);
+    },
   });
-}
+};

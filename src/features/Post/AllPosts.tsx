@@ -32,8 +32,8 @@ const AllPosts = () => {
   }
 
   return (
-    <div className="flex justify-center">
-      <div className="grid grid-cols-1 mt-5 mb-10 md:border-none border-t border-t-border">
+    <div>
+      <div className="grid grid-cols-1 mt-5 mb-14 md:border-none border-t border-t-border">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}

@@ -10,6 +10,7 @@ export interface EditDraftPayload {
   title?: string;
   content?: string;
   image?: string;
+  category?: string;
 }
 export interface CreateDraftInput {
   title: string;

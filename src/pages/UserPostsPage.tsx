@@ -5,10 +5,9 @@ import type { Post } from "../ui/types";
 import NotificationPage from "./NotificationPage";
 
 const UserPostsDisplay = () => {
-  const { data, isLoading, isError,error } = useUserPosts();
+  const { data, isLoading, isError } = useUserPosts();
   const posts: Post[] = data || [];
 
-  console.log(posts, isLoading, error);
 
   if (isLoading)
     return (

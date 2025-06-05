@@ -218,8 +218,14 @@ const CreatePostForm = () => {
           type="submit"
           className="w-[100px] flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
         >
-          <HiPlus className="text-xl" />
-          {isCreating ? <SpinnerMini /> : "Post"}
+          {isCreating ? (
+            <SpinnerMini />
+          ) : (
+            <>
+              <HiPlus className="text-xl" />
+              <p>Post</p>
+            </>
+          )}
         </button>
 
         <button
@@ -227,8 +233,13 @@ const CreatePostForm = () => {
           onClick={handleDraftSave}
           className="w-[150px] flex items-center justify-center gap-2 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition"
         >
-          <HiPlus className="text-xl" />
-          {isDrafting ? <SpinnerMini /> : "Save As Draft"}
+          {isDrafting ? (
+            <SpinnerMini />
+          ) : (
+            <>
+              <HiPlus className="text-xl" /> <p>Save As Draft</p>
+            </>
+          )}
         </button>
       </div>
     </form>

@@ -1,15 +1,12 @@
 import { FaEdit, FaTrash, FaPaperPlane } from "react-icons/fa";
-import { useGetDrafts } from "../features/Drafts/useGetDrafts";
 import Modal from "../components/Modal";
 import ConfirmAction from "../components/ConfirmAction";
-import EditDraftForm from "../features/Drafts/EditPostForm";
+import EditDraftForm from "../features/Drafts/EditDraftsForm";
 import type { Draft } from "../ui/types";
 import { useState } from "react";
 import { usePublishDraft } from "../features/Drafts/usePublishDraft";
 import { useDeleteDraft } from "../features/Drafts/useDeleteDraft";
-import Spinner from "../ui/Spinner";
-import NotificationPage from "./NotificationPage";
-import EditPostForm from "../features/Drafts/EditPostForm";
+import { useGetDrafts } from "../features/Drafts/useGetDrafts";
 
 const DraftsPage = () => {
   const [selectedDraft, setSelectedDraft] = useState<Draft | null>(null);
@@ -20,12 +17,7 @@ const DraftsPage = () => {
 
   const drafts: Draft[] = data || [];
 
-  if (isPending)
-    return (
-      <div className="px-4 py-8 flex justify-center">
-        <Spinner />
-      </div>
-    );
+  if (isPending) return <p className="text-center">Loading drafts...</p>;
   if (isError)
     return <p className="text-center text-red-500">Failed to load drafts.</p>;
   if (!drafts.length)
@@ -33,90 +25,77 @@ const DraftsPage = () => {
 
   return (
     <Modal>
-      <div className=" px-5 pt-4 pb-8 mb-4 md:w-6/10 md:px-20 ">
+      <div className="max-w-5xl  mt-5 mb-[4.5rem] md:p-6 space-y-6 md:w-10/12  mx-auto px-4 py-8 ">
+        <h2 className="hidden md:block text-3xl font-bold mb-4">Your Drafts</h2>
         {drafts.map((draft) => (
           <div
             key={draft._id}
-            className=" flex flex-col items-baseline  gap-3 text-sm mb-4 border-b border-b-border"
+            className=" rounded-lg shadow-sm border border-border p-5 md:p-6 flex flex-col md:flex-row gap-4 md:items-start hover:shadow-md transition-shadow"
           >
-            {/* Text content */}
-            <div className="flex flex-col items-baseline">
-              {/* Title */}
-              <h2 className="text-lg font-semibold  mb-1">{draft.title}</h2>
-
-              {/* Snippet */}
-              <p className="text-sm mb-3 line-clamp-3 text-left">
-                {draft.content.slice(0, 160)}...
-              </p>
-
-              {/* Image - shown after text if exists */}
-              {draft.image && (
+            {/* Image Section */}
+            {draft.image && (
+              <div className="w-full md:w-48 h-32 flex-shrink-0 overflow-hidden">
                 <img
-                  loading="lazy"
                   src={draft.image}
                   alt={draft.title}
-                  className="w-full max-h-60 object-cover rounded-md mb-3"
+                  className="w-full h-full object-contain"
                 />
-              )}
-            </div>
+              </div>
+            )}
 
-            <div className="my-4 flex flex-row gap-3">
-              <Modal.Open
-                opens="editDraft"
-                beforeOpen={() => setSelectedDraft(draft)}
-              >
-                <button
-                  title="Edit"
-                  className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium"
-                >
-                  <FaEdit /> Edit
-                </button>
-              </Modal.Open>
+            {/* Content Section */}
+            <div className="flex-1 space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="text-lg font-semibold line-clamp-1">
+                  {draft.title || "Untitled Draft"}
+                </h3>
+                <span className="text-xs  px-2 py-1 rounded-md capitalize">
+                  {draft.category || "Uncategorized"}
+                </span>
+              </div>
 
-              <Modal.Open
-                opens="deleteDraft"
-                beforeOpen={() => setSelectedDraft(draft)}
-              >
-                <button
-                  title="Delete"
-                  className="flex items-center gap-1 text-red-600 hover:text-red-800 text-sm font-medium"
-                >
-                  <FaTrash /> Delete
-                </button>
-              </Modal.Open>
+              <p className="text-sm text-gray-600 line-clamp-3">
+                {draft.content || "No content."}
+              </p>
 
-              <Modal.Open
-                opens="publishDraft"
-                beforeOpen={() => setSelectedDraft(draft)}
-              >
-                <button
-                  title="Publish"
-                  className="flex items-center gap-1 text-green-600 hover:text-green-800 text-sm font-medium"
+              <div className="flex gap-4 mt-3 text-sm">
+                <Modal.Open
+                  opens="editDraft"
+                  beforeOpen={() => setSelectedDraft(draft)}
                 >
-                  <FaPaperPlane /> Publish
-                </button>
-              </Modal.Open>
+                  <button className="text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                    <FaEdit /> Edit
+                  </button>
+                </Modal.Open>
+
+                <Modal.Open
+                  opens="deleteDraft"
+                  beforeOpen={() => setSelectedDraft(draft)}
+                >
+                  <button className="text-red-600 hover:text-red-800 flex items-center gap-1">
+                    <FaTrash /> Delete
+                  </button>
+                </Modal.Open>
+
+                <Modal.Open
+                  opens="publishDraft"
+                  beforeOpen={() => setSelectedDraft(draft)}
+                >
+                  <button className="text-green-600 hover:text-green-800 flex items-center gap-1">
+                    <FaPaperPlane /> Publish
+                  </button>
+                </Modal.Open>
+              </div>
             </div>
           </div>
         ))}
-        <div className="md:block fixed hidden right-3 top-20">
-          <NotificationPage />
-        </div>
 
         {/* ========= Modals (outside the loop) ========== */}
         {selectedDraft && (
           <>
-            <EditPostForm
-              initialData={draft}
-              isPending={isDraftUpdating}
-              onCloseModal={onCloseModal}
-              onSubmitForm={(data) =>
-                editDraft(
-                  { draftId: draft._id, payload: data },
-                  { onSuccess: onCloseModal }
-                )
-              }
-            />
+            <Modal.Window name="editDraft">
+              <EditDraftForm draft={selectedDraft} />
+            </Modal.Window>
 
             <Modal.Window name="deleteDraft">
               <ConfirmAction

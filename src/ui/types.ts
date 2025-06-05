@@ -19,6 +19,7 @@ export interface Draft {
   _id: string;
   title: string;
   content: string;
+  category: string;
   image?: string;
   slug: string;
 }
@@ -39,11 +40,18 @@ export interface Notification {
   isRead: boolean;
 }
 
-  export interface Comment {
+export interface Comment {
+  _id: string;
+  content: string;
+  post: string;
+  user: {
     _id: string;
-    postId: string;
-    content: string;
-    author: string;
-    createdAt: string;
-  }
-  
+    fullName: string;
+    avatar: string;
+  };
+  parent: string | null;
+  createdAt: string;
+  updatedAt: string;
+  replies: Comment[]; // Recursive for nested replies
+  id: string;
+}

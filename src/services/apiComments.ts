@@ -5,8 +5,10 @@ export interface CommentPayload {
   content: string;
 }
 
-export interface ReplyPayload extends CommentPayload {
-  parent: string;
+export interface ReplyPayload {
+  postId: string;
+  parent: string; // Parent comment ID
+  content: string;
 }
 
 export async function createComment(payload: CommentPayload) {
@@ -26,7 +28,7 @@ export async function createReplyOnComment(payload: ReplyPayload) {
 
 export async function getCommentsForPost(postId: string) {
   const { data } = await api.get(`/posts/${postId}/comments`);
-  return data;
+  return data.data;
 }
 
 export async function updateComment(payload: {
