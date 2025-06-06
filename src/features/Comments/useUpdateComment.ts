@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateComment } from "../../services/apiComments";
+import toast from "react-hot-toast";
 
 export function useUpdateComment() {
   const queryClient = useQueryClient();
@@ -10,6 +11,7 @@ export function useUpdateComment() {
       content: string;
     }) => updateComment(payload),
     onSuccess: (_, variables) => {
+      toast.success('Comment Updated')
       queryClient.invalidateQueries({
         queryKey: ["comments", variables.postId],
       });

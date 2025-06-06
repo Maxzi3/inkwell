@@ -19,11 +19,30 @@ export interface CreateDraftInput {
   image?: string;
 }
 
-// GET all posts
-export const getPosts = async () => {
-  const res = await api.get("/posts");
+type GetPostsParams = {
+  search?: string;
+  category?: string;
+  page?: number;
+  limit?: number;
+};
+
+export const getPosts = async ({
+  search,
+  category,
+  page = 1,
+  limit = 3,
+}: GetPostsParams) => {
+  const res = await api.get("/posts", {
+    params: {
+      search,
+      category,
+      page,
+      limit,
+    },
+  });
   return res.data;
 };
+
 export const getUserPosts = async () => {
   const res = await api.get("/posts/my/posts");
   return res.data.data;

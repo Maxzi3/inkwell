@@ -7,6 +7,7 @@ import { useState } from "react";
 import { usePublishDraft } from "../features/Drafts/usePublishDraft";
 import { useDeleteDraft } from "../features/Drafts/useDeleteDraft";
 import { useGetDrafts } from "../features/Drafts/useGetDrafts";
+import Spinner from "../ui/Spinner";
 
 const DraftsPage = () => {
   const [selectedDraft, setSelectedDraft] = useState<Draft | null>(null);
@@ -17,7 +18,11 @@ const DraftsPage = () => {
 
   const drafts: Draft[] = data || [];
 
-  if (isPending) return <p className="text-center">Loading drafts...</p>;
+  if (isPending) return (
+    <div className="px-4  flex justify-center">
+      <Spinner />
+    </div>
+  );
   if (isError)
     return <p className="text-center text-red-500">Failed to load drafts.</p>;
   if (!drafts.length)
@@ -49,12 +54,12 @@ const DraftsPage = () => {
                 <h3 className="text-lg font-semibold line-clamp-1">
                   {draft.title || "Untitled Draft"}
                 </h3>
-                <span className="text-xs  px-2 py-1 rounded-md capitalize">
+                <span className="text-xs bg-input rounded-xl px-2 py-1  capitalize">
                   {draft.category || "Uncategorized"}
                 </span>
               </div>
 
-              <p className="text-sm text-gray-600 line-clamp-3">
+              <p className="text-sm  line-clamp-3">
                 {draft.content || "No content."}
               </p>
 

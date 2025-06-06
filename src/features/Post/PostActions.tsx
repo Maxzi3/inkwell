@@ -8,7 +8,7 @@ import {
 } from "@floating-ui/react-dom";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { HiEllipsisVertical } from "react-icons/hi2";
+import { HiEllipsisHorizontal} from "react-icons/hi2";
 
 import Modal from "../../components/Modal";
 import type { Post } from "../../ui/types";
@@ -73,7 +73,7 @@ const PostActions = ({ post }: { post: Post }) => {
                   className="p-2 rounded hover:bg-gray-100"
                   disabled={!isPostVisible}
                 >
-                  <HiEllipsisVertical className="w-5 h-5 text-gray-600" />
+                  <HiEllipsisHorizontal className="w-5 h-5 text-gray-600" />
                 </MenuButton>
 
                 {open && isPostVisible && (

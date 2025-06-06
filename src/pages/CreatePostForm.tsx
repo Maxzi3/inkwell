@@ -9,7 +9,7 @@ import SpinnerMini from "../ui/SpinnerMini";
 import { useCreatePost } from "../features/Post/useCreatePost";
 import { useCreateDraft } from "../features/Drafts/useCreateDraft";
 
-const categories = ["Technology", "Lifestyle", "Education", "Business"];
+const categories = ["technology", "lifestyle", "education", "business"];
 
 type FormValues = {
   title: string;
@@ -148,7 +148,7 @@ const CreatePostForm = () => {
         >
           <option value="">Select a category</option>
           {categories.map((cat) => (
-            <option key={cat} value={cat}>
+            <option key={cat} value={cat} className="capitalize">
               {cat}
             </option>
           ))}

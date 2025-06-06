@@ -1,6 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Comment } from "../../ui/types";
 import SpinnerMini from "../../ui/SpinnerMini";
+import { useUpdateComment } from "./useUpdateComment";
+import { useGetMe } from "../User/useGetMe";
+import EditCommentForm from "./EditCommentForm";
+import { useDeleteComment } from "./useDeleteComment";
+import { FaTrash } from "react-icons/fa6";
+import { FaEdit } from "react-icons/fa";
 
 interface CommentCardProps {
   comment: Comment;
@@ -16,7 +22,19 @@ const CommentCard: React.FC<CommentCardProps> = ({
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [showReplies, setShowReplies] = useState(false);
- 
+  const [isEditing, setIsEditing] = useState(false);
+
+  const { mutate: editComment, isPending: isUpdating } = useUpdateComment();
+  const { mutate: deleteComment, isPending: isdeleting } = useDeleteComment();
+
+  const { data: user } = useGetMe();
+  const [isOwnComment, setIsOwnComment] = useState(false);
+
+  useEffect(() => {
+    if (user && comment?.user?._id) {
+      setIsOwnComment(user._id === comment.user._id);
+    }
+  }, [user, comment?.user?._id]);
 
   const handleReply = () => {
     if (!replyContent.trim()) return;
@@ -24,6 +42,21 @@ const CommentCard: React.FC<CommentCardProps> = ({
     setReplyContent("");
     setShowReplyForm(false);
     setShowReplies(true); // expand replies when user replies
+  };
+
+  const handleEditSave = (newContent: string) => {
+    editComment(
+      {
+        postId: comment.post, // use the post ID from the comment
+        commentId: comment._id,
+        content: newContent,
+      },
+      {
+        onSuccess: () => {
+          setIsEditing(false);
+        },
+      }
+    );
   };
 
   return (
@@ -36,19 +69,60 @@ const CommentCard: React.FC<CommentCardProps> = ({
         />
         <div className="flex-1">
           <div className="font-medium">{comment.user.fullName}</div>
-          <div className="text-sm ">{comment.content}</div>
+          {isEditing ? (
+            <EditCommentForm
+              initialContent={comment.content}
+              onSave={handleEditSave}
+              onCancel={() => setIsEditing(false)}
+              isSaving={isUpdating}
+            />
+          ) : (
+            <div className="text-sm text-gray-700">{comment.content}</div>
+          )}
 
-          <div className="flex gap-3 mt-1 text-sm text-blue-500">
-            <button onClick={() => setShowReplyForm((prev) => !prev)}>
-              {showReplyForm ? "Cancel" : "Reply"}
-            </button>
+          <div className="flex gap-3 mt-1 text-sm text-blue-500 items-center justify-between">
+            {/* Left side actions */}
+            <div className="flex gap-3">
+              {!isEditing && (
+                <>
+                  {comment.parent === null && (
+                    <button onClick={() => setShowReplyForm((prev) => !prev)}>
+                      {showReplyForm ? "Cancel" : "Reply"}
+                    </button>
+                  )}
 
-            {comment.replies?.length > 0 && (
-              <button onClick={() => setShowReplies((prev) => !prev)}>
-                {showReplies
-                  ? ` Hide replies (${comment.replies.length})`
-                  : `View replies (${comment.replies.length})`}
-              </button>
+                  {comment.replies?.length > 0 && (
+                    <button onClick={() => setShowReplies((prev) => !prev)}>
+                      {showReplies
+                        ? `Hide replies (${comment.replies.length})`
+                        : `View replies (${comment.replies.length})`}
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+
+            {/* Right side actions (Edit & Delete) */}
+            {!isEditing && isOwnComment && (
+              <div className="flex items-center gap-2 ml-auto">
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  <FaEdit />
+                </button>
+                <button
+                  onClick={() =>
+                    deleteComment({
+                      postId: comment.post,
+                      commentId: comment._id,
+                    })
+                  }
+                  className="text-red-600 hover:text-red-800"
+                >
+                  {isdeleting ? <SpinnerMini /> : <FaTrash />}
+                </button>
+              </div>
             )}
           </div>
 

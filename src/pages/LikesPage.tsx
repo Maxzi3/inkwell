@@ -10,7 +10,7 @@ const LikesPage = () => {
 
   if (isPending)
     return (
-      <div className="px-4 py-8 flex justify-center">
+      <div className="px-4  flex justify-center">
         <Spinner />
       </div>
     );
