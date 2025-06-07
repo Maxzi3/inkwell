@@ -28,7 +28,7 @@ const PostDetail = () => {
   const { data: post, isPending, isError } = useGetPostBySlug(slug!);
   
 
-  const handleGoBack = () => navigate(-1);
+  const handleGoBack = () => navigate('/');
 
   if (isPending)
     return (
@@ -40,7 +40,7 @@ const PostDetail = () => {
     return <p className="text-center text-red-500">Post not found.</p>;
 
   return (
-    <div className="px-4 pb-20 max-w-3xl mx-auto space-y-4">
+    <div className="px-4 md:px-20 pb-20 md:w-[800px] space-y-4">
       {/* Back Button */}
       <button
         onClick={handleGoBack}
@@ -71,43 +71,20 @@ const PostDetail = () => {
       <h1 className="text-2xl font-bold mb-4 capitalize underline underline-offset-8">
         {post.title}
       </h1>
+      {/* Content */}
+      <div className="text-base leading-relaxed  mb-6 px-1">
+        <p>{post.content || "No content provided."}</p>
+      </div>
 
       {/* Thumbnail */}
       {post.image && (
         <img
           src={post.image}
           alt={post.title}
-          className="w-full rounded-lg mb-6 max-h-[400px] object-cover"
+          className="w-full rounded-lg mb-6 max-h-[300px] object-contain"
         />
       )}
 
-      {/* Content */}
-      <div className="text-base leading-relaxed  mb-6 px-1">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Mollitia
-        deleniti, aperiam laboriosam quam nobis, sit saepe voluptates
-        perspiciatis nisi at deserunt libero. Adipisci dolorum rerum alias
-        repudiandae, earum corporis neque, eum beatae enim consequatur ea animi
-        suscipit nesciunt iusto eaque reprehenderit dignissimos iure dolorem!
-        Nihil aliquid distinctio quaerat nulla? Officiis cumque amet esse nisi,
-        optio dolores placeat minima ipsum sapiente, voluptatem incidunt
-        reiciendis nemo recusandae cum fuga maxime quis! Iste corporis
-        repellendus mollitia voluptatum est, vero reprehenderit nemo beatae ea
-        fugiat eos fugit officiis esse. Aliquid hic nesciunt aut, voluptatibus
-        porro obcaecati dolore dolor sequi ut molestiae aliquam rerum maiores
-        deleniti id sint rem ex! Fugiat, omnis! Doloremque tempore vitae
-        recusandae itaque dolores, illo quia ratione vel voluptatum! Beatae
-        maxime, omnis fuga veritatis tenetur praesentium id eos iure, laborum
-        et, nulla exercitationem voluptates officia qui? Illum quisquam
-        dignissimos possimus nulla recusandae quibusdam autem, cupiditate saepe
-        iste excepturi quod distinctio deserunt dolores consequuntur,
-        repellendus inventore numquam iusto, in id doloribus provident
-        perferendis ullam voluptate maiores. Ipsam exercitationem repellat
-        doloremque eligendi ex odit enim illo voluptatum harum qui placeat sit
-        molestiae nam optio sint tempora aperiam alias, veniam et? Voluptatem
-        velit modi, suscipit libero quidem esse ad adipisci eum eius culpa
-        dolor.
-        <p>{post.content || "No content provided."}</p>
-      </div>
 
       {/* Post Stats */}
       <div className="flex justify-around text-lg py-4 border-t border-b border-gray-200">

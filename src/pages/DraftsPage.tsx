@@ -26,7 +26,7 @@ const DraftsPage = () => {
   if (isError)
     return <p className="text-center text-red-500">Failed to load drafts.</p>;
   if (!drafts.length)
-    return <p className="text-center text-gray-500">No drafts yet.</p>;
+    return <p className="text-center  py-4">No drafts yet.</p>;
 
   return (
     <Modal>

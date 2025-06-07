@@ -40,7 +40,7 @@ const AccountHeader = () => {
           </div>
         )}
         <DarkmodeToggle />
-        <HeaderWithSettings />
+        {isAuthenticated && <HeaderWithSettings />}
       </div>
     </header>
   );

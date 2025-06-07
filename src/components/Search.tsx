@@ -1,35 +1,41 @@
-import { FiSearch, FiX } from "react-icons/fi";
 import { useSearchParams } from "react-router-dom";
-import type { ChangeEvent } from "react";
+import { useEffect, useState } from "react";
+import { FiSearch, FiX } from "react-icons/fi";
+import { useDebounce } from "../hooks/useDebounce";
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchTerm: string = searchParams.get("search") || "";
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    searchParams.set("search", e.target.value);
-    setSearchParams(searchParams);
-  };
+  const initialSearch = searchParams.get("search") || "";
+  const [search, setSearch] = useState(initialSearch);
 
-  const clearSearch = () => {
-    searchParams.delete("search");
-    setSearchParams(searchParams);
-  };
+  const debouncedSearch = useDebounce(search, 1000);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    if (debouncedSearch) {
+      params.set("search", debouncedSearch);
+    } else {
+      params.delete("search");
+    }
+    params.set("page", "1"); // Reset page on search
+    setSearchParams(params);
+  }, [debouncedSearch]);
 
   return (
     <div className="relative w-full max-w-[500px] mx-auto">
-    <FiSearch className="absolute left-8 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-300 hover:scale-110 transition-transform" />
+      <FiSearch className="absolute left-8 top-1/2 -translate-y-1/2 text-gray-400 hover:scale-110 transition-transform" />
       <input
         className="border-none border-text-primary bg-input focus:ring-blue-500 transition-all duration-300 placeholder:text-text-primary flex w-11/12 mx-auto py-3 pl-[40px] overflow-hidden rounded-lg focus:outline-0 focus:ring-0 h-full  text-base font-normal leading-normal"
         type="text"
         placeholder="Search"
-        value={searchTerm}
-        onChange={handleSearch} 
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
-      {searchTerm && (
+      {search && (
         <button
-          onClick={clearSearch}
-          className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400"
+          onClick={() => setSearch("")}
+          className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500"
         >
           <FiX size={18} />
         </button>

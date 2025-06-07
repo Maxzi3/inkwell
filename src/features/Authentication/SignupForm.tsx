@@ -81,7 +81,7 @@ function SignupForm() {
             type="text"
             id="username"
             disabled={isPending}
-            placeholder="@johndoe"
+            placeholder="johndoe"
             {...register("username", { required: "This Field is Required" })}
           />
           {errors?.username && (

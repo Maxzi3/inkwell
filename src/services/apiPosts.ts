@@ -30,7 +30,7 @@ export const getPosts = async ({
   search,
   category,
   page = 1,
-  limit = 3,
+  limit = 10,
 }: GetPostsParams) => {
   const res = await api.get("/posts", {
     params: {

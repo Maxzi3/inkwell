@@ -1,16 +1,17 @@
-export interface Post  {
+export interface Post {
   _id: string;
   title: string;
   content: string;
-  category:string;
+  category: string;
   image?: string;
   createdAt: string;
   author: {
+    _id: string;
     fullName: string;
     avatar: string;
   };
-  views:number;
-  slug:string;
+  views: number;
+  slug: string;
   likes: string[];
   bookmarks: string[];
   comment: string[];

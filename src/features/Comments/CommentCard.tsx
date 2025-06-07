@@ -47,7 +47,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
   const handleEditSave = (newContent: string) => {
     editComment(
       {
-        postId: comment.post, // use the post ID from the comment
+        postId: comment.post,
         commentId: comment._id,
         content: newContent,
       },
@@ -60,7 +60,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
   };
 
   return (
-    <div className="p-4 border rounded-md ">
+    <div className="p-4 border rounded-md md:w-[380px] ">
       <div className="flex items-start gap-3">
         <img
           src={comment.user.avatar}
@@ -77,7 +77,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
               isSaving={isUpdating}
             />
           ) : (
-            <div className="text-sm text-gray-700">{comment.content}</div>
+            <div className="text-sm ">{comment.content}</div>
           )}
 
           <div className="flex gap-3 mt-1 text-sm text-blue-500 items-center justify-between">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom'
-// import Search from '../components/Search';
+import Search from '../components/Search';
 import AccountHeader from '../components/AppHeader';
 import SideBar from '../components/SideBar';
 import Footer from '../components/Footer';
@@ -19,7 +19,7 @@ const AppLayout = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // const isHomePage = location.pathname === "/";
+  const isHomePage = location.pathname === "/";
   const isProfilePage = location.pathname.startsWith("/profile");
 
   if (isMobile) {
@@ -33,7 +33,7 @@ const AppLayout = () => {
             </h2>
             <DarkModeToggle />
           </div>}
-          {/* {isHomePage && <Search />} */}
+          {isHomePage && <Search />}
         </div>
         <main className="overflow-hidden min-h-screen ">
           <Outlet />

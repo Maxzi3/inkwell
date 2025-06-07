@@ -5,13 +5,20 @@ import { formatTimeAgo } from "../../ui/helpers";
 import BookmarkButton from "../Bookmarks/BookmarkButton";
 import LikeButton from "./LikeButton";
 import PostActions from "./PostActions";
+import { useEffect, useState } from "react";
+import { useGetMe } from "../User/useGetMe";
 
 const PostCard = ({ post }: { post: Post }) => {
+  const [isOwnPost, setIsOwnPost] = useState(false);
+  const { data: user } = useGetMe();
+  useEffect(() => {
+    if (user && post?.author?._id) {
+      setIsOwnPost(user._id === post?.author?._id);
+    }
+  }, [user, post?.author?._id]);
+
   return (
-    <div
-      className="border-b border-b-border px-5 py-2 mb-4 md:w-1/2  w-full md:px-16 transition"
-      data-post-wrapper
-    >
+    <div className="border-b border-b-border px-5 py-2 mb-4 md:w-1/2 w-full md:px-10 transition">
       <div className="flex flex-col items-baseline">
         {/* Header */}
         <div className="flex justify-between items-center w-full">
@@ -27,7 +34,7 @@ const PostCard = ({ post }: { post: Post }) => {
             <span>•</span>
             <span className="text-xs">{formatTimeAgo(post.createdAt)}</span>
           </div>
-          <PostActions post={post} />
+          {isOwnPost && <PostActions post={post} />}
         </div>
 
         {/* Title */}

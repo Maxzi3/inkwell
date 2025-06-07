@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import SpinnerMini from "../../ui/SpinnerMini";
 import { useResetPassword } from "../Authentication/useResetPassword";
 import toast from "react-hot-toast";
+import FormInput from "../../ui/FormInput";
 
 function ResetPasswordPage() {
   const { token } = useParams<string>();
@@ -12,19 +13,19 @@ function ResetPasswordPage() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (password !== passwordConfirm) {
+      toast.error("Passwords do not match");
+      return;
+    }
     reset({ token: token || "", password, passwordConfirm });
   };
 
-  if (password !== passwordConfirm) {
-    toast.error("Passwords do not match");
-    return;
-  }
 
   return (
     <div className="min-h-[90vh] flex items-center justify-center px-4 flex-col space-x-4 space-y-5">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg p-6 rounded-md w-full max-w-md"
+        className=" shadow-lg p-6 rounded-md w-full max-w-md"
       >
         <h2 className="text-xl font-semibold mb-5 text-center">
           Reset Password
@@ -34,7 +35,9 @@ function ResetPasswordPage() {
           <label htmlFor="password" className="text-sm">
             New Password
           </label>
-          <input
+          <FormInput
+            id="password"
+            togglePassword
             type="password"
             name="password"
             value={password}
@@ -48,7 +51,9 @@ function ResetPasswordPage() {
           <label htmlFor="passwordConfirm" className="text-sm">
             Confirm Password
           </label>
-          <input
+          <FormInput
+            id="passwordConfirm"
+            togglePassword
             type="password"
             name="passwordConfirm"
             value={passwordConfirm}
@@ -61,9 +66,15 @@ function ResetPasswordPage() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-black text-white py-2 rounded-md"
+          className="px-4 py-3 w-[150px] rounded-md disabled:bg-input disabled:text-secondary bg-secondary text-primary hover:text-secondary hover:bg-input mx-auto block"
         >
-          {isPending ? <SpinnerMini /> : "Reset Password"}
+          {isPending ? (
+            <div className="flex justify-center">
+              <SpinnerMini />
+            </div>
+          ) : (
+            "Reset Password"
+          )}
         </button>
       </form>
     </div>

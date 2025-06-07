@@ -53,7 +53,7 @@ export async function forgotPassword(payload: { email: string }) {
 }
 
 export async function resetPassword(payload: ResetPayload) {
-  const { data } = await api.patch(`/auth/resetPassword/${payload.token}`, {
+  const { data } = await api.patch(`/auth/reset-password/${payload.token}`, {
     password: payload.password,
     passwordConfirm: payload.passwordConfirm,
   });

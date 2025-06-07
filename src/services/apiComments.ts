@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 export interface CommentPayload {
   postId: string;
@@ -10,6 +10,7 @@ export interface ReplyPayload {
   parent: string; // Parent comment ID
   content: string;
 }
+
 
 export async function createComment(payload: CommentPayload) {
   const { data } = await api.post(`/posts/${payload.postId}/comments`, {
@@ -26,9 +27,14 @@ export async function createReplyOnComment(payload: ReplyPayload) {
   return data;
 }
 
-export async function getCommentsForPost(postId: string) {
-  const { data } = await api.get(`/posts/${postId}/comments`);
-  return data.data;
+export async function getCommentsForPost(postId: string, page = 1, limit = 5) {
+  const { data } = await api.get(`/posts/${postId}/comments`, {
+    params: {
+      page,
+      limit,
+    },
+  });
+  return data;
 }
 
 export async function updateComment(payload: {
