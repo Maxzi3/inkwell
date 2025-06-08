@@ -7,7 +7,7 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import FormInput from "../../ui/FormInput";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import toast from "react-hot-toast";
-
+import Logo from "../../components/Logo";
 
 function LoginForm() {
   const [searchParams] = useSearchParams();
@@ -18,7 +18,7 @@ function LoginForm() {
   const { mutate: login, isPending, error } = useLogin();
   const { mutate: resend, isPending: isResending } = useResendEmail();
   const handleClick = () => {
-    navigate("/"); 
+    navigate("/");
   };
 
   const toastShownRef = useRef(false);
@@ -64,12 +64,12 @@ function LoginForm() {
 
   return (
     <div className="min-h-screen flex items-center gap-3.5 px-4 flex-col space-x-4 space-y-4 text-text-primary bg-primary">
-      <div className="flex items-center p-4 md:p-5 justify-between w-full">
+      <div className="flex items-center p-4 md:p-5 gap-18 w-full">
         <button onClick={handleClick}>
-          <FaArrowLeftLong className="flex shrink-0 items-center" />
+          <FaArrowLeftLong className="mt-2" />
         </button>
         <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
-          Logo
+          <Logo />
         </h2>
       </div>
       <h2 className=" tracking-light text-[28px] font-bold leading-tight px-4 text-center pt-5">

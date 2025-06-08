@@ -5,6 +5,7 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import FormInput from "../../ui/FormInput";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import type { SignupPayload } from "../../services/apiAuth";
+import Logo from "../../components/Logo";
 
 type SignupFormValues = SignupPayload;
 
@@ -31,14 +32,14 @@ function SignupForm() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 flex-col space-x-4 space-y-2 text-text-primary bg-primary">
-      <div className="flex items-center  p-4 md:p-5 justify-between w-full">
-        <button onClick={handleClick}>
-          <FaArrowLeftLong className="flex shrink-0 items-center" />
-        </button>
-        <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
-          logo
-        </h2>
-      </div>
+        <div className="flex items-center p-4 md:p-5 gap-18 w-full">
+             <button onClick={handleClick}>
+               <FaArrowLeftLong className="mt-2" />
+             </button>
+             <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
+               <Logo />
+             </h2>
+           </div>
       <h2 className="tracking-light text-[28px] font-bold leading-tight p-4 text-center pt-5">
         Create Account
       </h2>

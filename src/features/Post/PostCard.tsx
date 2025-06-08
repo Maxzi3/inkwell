@@ -29,7 +29,7 @@ const PostCard = ({ post }: { post: Post }) => {
               alt={post.author.fullName?.split(" ")[1]}
             />
             <span className="font-medium">
-              {post.author.fullName?.split(" ")[1]}
+              {post.author.fullName}
             </span>
             <span>•</span>
             <span className="text-xs">{formatTimeAgo(post.createdAt)}</span>

@@ -3,7 +3,7 @@ import { HiOutlineUser } from "react-icons/hi2";
 import Search from "./Search";
 import HeaderWithSettings from "./HeaderWithSettings";
 import { Link, useLocation } from "react-router-dom";
-
+import Logo from "./Logo";
 import { useGetMe } from "../features/User/useGetMe";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -15,7 +15,7 @@ const AccountHeader = () => {
   if (isLoading || isAuthenticated === undefined) return null;
   return (
     <header className="px-12 py-3 border-b-2 border-gray-200  flex items-center justify-between">
-      <h1>InkWell</h1>
+      <Logo />
       {isHomePage && <Search />}
       <div className="flex items-center gap-2">
         {isAuthenticated ? (

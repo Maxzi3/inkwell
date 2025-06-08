@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import Modal from "./Modal";
+import Logo from "./Logo";
 
 const HeaderWithSettings = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -25,7 +26,7 @@ const HeaderWithSettings = () => {
         <div className="relative">
             <div className="flex items-center justify-between w-full md:p-0 p-4">
                 <h2 className="md:hidden text-lg font-bold leading-tight tracking-[-0.015em]">
-                    Logo
+                <Logo/>
                 </h2>
                 <CiSettings
                     className="text-3xl cursor-pointer"

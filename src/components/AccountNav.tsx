@@ -11,8 +11,8 @@ import { HiOutlineClipboardList } from "react-icons/hi";
 // Utility function that uses the isActive flag from NavLink
 const getLinkClass = ({ isActive }: { isActive: boolean }) =>
   isActive
-    ? "flex items-center gap-3 font-medium text-base px-2 py-3 rounded-md transition-all bg-secondary  text-input"
-    : "flex items-center gap-3 font-medium text-base px-2 py-3 rounded-md transition-all hover:bg-input hover:text-text-primary";
+    ? "flex items-center gap-2 font-medium text-base px-2 py-3 rounded-md transition-all bg-secondary  text-input"
+    : "flex items-center gap-2 font-medium text-base px-2 py-3 rounded-md transition-all hover:bg-input hover:text-text-primary";
 
 const AccountNav = () => {
   return (

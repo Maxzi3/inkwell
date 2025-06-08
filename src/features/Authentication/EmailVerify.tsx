@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useEmailVerify } from "./useEmailVerify";
 import Spinner from "../../ui/Spinner";
+import Logo from "../../components/Logo";
 
 function EmailVerification() {
   const { token } = useParams<{ token: string }>();
@@ -19,7 +20,7 @@ function EmailVerification() {
     <div className="min-h-screen flex pt-36 items-center px-4 flex-col text-text-primary bg-primary">
       <div className="flex items-center p-4 md:p-5 justify-between w-full">
         <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
-          Logo
+          <Logo/>
         </h2>
       </div>
 

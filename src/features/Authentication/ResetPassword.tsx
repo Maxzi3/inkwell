@@ -4,6 +4,7 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import { useResetPassword } from "../Authentication/useResetPassword";
 import toast from "react-hot-toast";
 import FormInput from "../../ui/FormInput";
+import Logo from "../../components/Logo";
 
 function ResetPasswordPage() {
   const { token } = useParams<string>();
@@ -20,12 +21,14 @@ function ResetPasswordPage() {
     reset({ token: token || "", password, passwordConfirm });
   };
 
-
   return (
-    <div className="min-h-[90vh] flex items-center justify-center px-4 flex-col space-x-4 space-y-5">
+    <div className="min-h-[90vh] flex items-center justify-center px-4 flex-col space-">
+      <div className="flex items-center justify-center p-4 md:p-5 w-full">
+        <Logo />
+      </div>
       <form
         onSubmit={handleSubmit}
-        className=" shadow-lg p-6 rounded-md w-full max-w-md"
+        className=" mx-auto my-10 md:my-2 flex flex-col justify-center md:p-10 rounded-lg space-y-6 text-sm md:border border-gray-200 md:w-[30rem] w-[20rem]"
       >
         <h2 className="text-xl font-semibold mb-5 text-center">
           Reset Password
