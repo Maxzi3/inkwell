@@ -28,9 +28,7 @@ const PostCard = ({ post }: { post: Post }) => {
               className="w-8 h-8 rounded-full object-cover"
               alt={post.author.fullName?.split(" ")[1]}
             />
-            <span className="font-medium">
-              {post.author.fullName}
-            </span>
+            <span className="font-medium">{post.author.fullName}</span>
             <span>•</span>
             <span className="text-xs">{formatTimeAgo(post.createdAt)}</span>
           </div>
@@ -38,7 +36,12 @@ const PostCard = ({ post }: { post: Post }) => {
         </div>
 
         {/* Title */}
-        <h2 className="text-lg font-semibold mb-1 ">{post.title}</h2>
+        <Link
+          to={`/posts/${post.slug}`}
+          className="text-lg font-semibold mb-1 "
+        >
+          {post.title}
+        </Link>
 
         {/* Snippet */}
         <p className="text-sm mb-3 line-clamp-3 text-left">

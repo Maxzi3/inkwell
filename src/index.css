@@ -39,3 +39,12 @@ html {
   transition: background-color 0.5s ease, border 0.3s ease,
     button-color 0.3s ease, color 0.3s ease;
 }
+
+/* Hide scrollbar but allow scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Opera */
+}

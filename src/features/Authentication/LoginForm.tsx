@@ -64,7 +64,7 @@ function LoginForm() {
 
   return (
     <div className="min-h-screen flex items-center gap-3.5 px-4 flex-col space-x-4 space-y-4 text-text-primary bg-primary">
-      <div className="flex items-center p-4 md:p-5 gap-18 w-full">
+      <div className="flex items-center p-4 md:p-5 gap-2 w-full">
         <button onClick={handleClick}>
           <FaArrowLeftLong className="mt-2" />
         </button>

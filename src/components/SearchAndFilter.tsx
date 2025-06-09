@@ -14,7 +14,7 @@ export default function SearchAndFilterBar({
   return (
     <div className="mb-6 space-y-4 ">
       {/* Categories */}
-      <div className="flex overflow-hidden gap-2">
+      <div className="flex overflow-auto scrollbar-hide gap-2">
         {categories.map((cat) => (
           <button
             key={cat}

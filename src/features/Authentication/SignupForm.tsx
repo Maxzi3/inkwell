@@ -18,8 +18,8 @@ function SignupForm() {
     reset,
   } = useForm<SignupFormValues>();
 
-  const { mutate: signup, isPending, error } = useSignup();
-  console.error(error)
+  const { mutate: signup, isPending,  } = useSignup();
+
   const navigate = useNavigate();
 
   const handleClick = () => navigate("/");
@@ -32,7 +32,7 @@ function SignupForm() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 flex-col space-x-4 space-y-2 text-text-primary bg-primary">
-        <div className="flex items-center p-4 md:p-5 gap-18 w-full">
+        <div className="flex items-center p-4 md:p-5 gap-2 w-full">
              <button onClick={handleClick}>
                <FaArrowLeftLong className="mt-2" />
              </button>
