@@ -6,8 +6,8 @@ import type { JSX } from "react";
 import BookmarkButton from "../Bookmarks/BookmarkButton";
 import LikeButton from "./LikeButton";
 import Spinner from "../../ui/Spinner";
-import CommentForm from "../Comments/commentForm";
 import CommentList from "../Comments/CommentList";
+import CommentForm from "../Comments/CommentForm";
 
 const IconWithCount = ({
   icon,
