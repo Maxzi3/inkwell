@@ -1,9 +1,12 @@
 import axios from "axios";
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL =
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_API_URL // only for dev
+    : "/api"; // in production, backend serves frontend and proxy is relative
 
 
 const api = axios.create({
-  baseURL: baseUrl,
+  baseURL: BASE_URL,
   withCredentials: true, //
 });
 
