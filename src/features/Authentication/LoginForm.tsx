@@ -8,6 +8,7 @@ import FormInput from "../../ui/FormInput";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import Logo from "../../components/Logo";
+import { isAxiosError } from "axios";
 
 function LoginForm() {
   const [searchParams] = useSearchParams();
@@ -60,7 +61,8 @@ function LoginForm() {
   }
 
   const showResend =
-    error?.message === "Please verify your email before logging in.";
+    isAxiosError(error) &&
+    error.response?.data?.message?.toLowerCase().includes("verify");
 
   return (
     <div className="min-h-screen flex items-center gap-3.5 px-4 flex-col space-x-4 space-y-4 text-text-primary bg-primary">
