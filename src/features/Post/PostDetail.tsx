@@ -26,7 +26,8 @@ const PostDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { data: post, isPending, isError } = useGetPostBySlug(slug!);
-  
+  console.log(post)
+ 
 
   const handleGoBack = () => navigate('/');
 
@@ -40,7 +41,7 @@ const PostDetail = () => {
     return <p className="text-center text-red-500">Post not found.</p>;
 
   return (
-    <div className="px-4 md:px-20 pb-20 md:w-[800px] space-y-4">
+    <div className="px-4 lg:px-20 pb-20 md:w-[800px] space-y-4 lg:py-4 py-22">
       {/* Back Button */}
       <button
         onClick={handleGoBack}
@@ -73,7 +74,11 @@ const PostDetail = () => {
       </h1>
       {/* Content */}
       <div className="text-base leading-relaxed  mb-6 px-1">
-        <p>{post.content || "No content provided."}</p>
+        {post.content.split("*").map((paragraph: string, index: number) => (
+          <span key={index} className="block mb-2">
+            {paragraph.trim()}
+          </span>
+        ))}
       </div>
 
       {/* Thumbnail */}
@@ -85,13 +90,12 @@ const PostDetail = () => {
         />
       )}
 
-
       {/* Post Stats */}
       <div className="flex justify-around text-lg py-4 border-t border-b border-gray-200">
         <LikeButton post={post} />
         <IconWithCount
           icon={<FaRegComment />}
-          count={post.comments?.length || 0}
+          count={post.comments?.length}
         />
         <BookmarkButton post={post} />
         <IconWithCount icon={<FaEye />} count={post.views || 0} />

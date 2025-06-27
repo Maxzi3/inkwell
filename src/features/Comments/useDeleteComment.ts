@@ -13,10 +13,16 @@ export function useDeleteComment() {
       postId: string;
       commentId: string;
     }) => deleteComment(postId, commentId),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       toast.success("Comment Deleted");
       queryClient.invalidateQueries({
-        queryKey: ["comments", variables.postId],
+        queryKey: ["comments"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["post"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["posts"],
       });
     },
     onError: (error: Error) => {

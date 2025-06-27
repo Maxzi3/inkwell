@@ -18,21 +18,29 @@ const PostCard = ({ post }: { post: Post }) => {
   }, [user, post?.author?._id]);
 
   return (
-    <div className="border-b border-b-border px-5 py-2 mb-4 md:w-1/2 w-full md:px-10 transition">
+    <div className="relative border-b border-b-border px-5 py-2 mb-4 lg:w-1/2 w-full lg:px-10 transition">
+      {isOwnPost && (
+        <div className="absolute top-4 right-4">
+          <PostActions post={post} />
+        </div>
+      )}
       <div className="flex flex-col items-baseline">
         {/* Header */}
-        <div className="flex justify-between items-center w-full">
-          <div className="flex justify-between items-center gap-3 text-sm mb-2">
+        <div className="flex justify-between lg:gap-20 items-center ">
+          <div className="flex items-start gap-2 text-sm mb-2 flex-wrap sm:flex-nowrap">
             <img
               src={post.author.avatar}
-              className="w-8 h-8 rounded-full object-cover"
+              className="w-8 h-8 rounded-full object-cover mt-0.5"
               alt={post.author.fullName?.split(" ")[1]}
             />
-            <span className="font-medium">{post.author.fullName}</span>
-            <span>•</span>
-            <span className="text-xs">{formatTimeAgo(post.createdAt)}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+              <span className="font-medium">{post.author.fullName}</span>
+              <span className="hidden sm:block">•</span>
+              <span className="text-xs text-gray-500">
+                {formatTimeAgo(post.createdAt)}
+              </span>
+            </div>
           </div>
-          {isOwnPost && <PostActions post={post} />}
         </div>
 
         {/* Title */}
@@ -45,7 +53,7 @@ const PostCard = ({ post }: { post: Post }) => {
 
         {/* Snippet */}
         <p className="text-sm mb-3 line-clamp-3 text-left">
-          {post.content.slice(0, 160)}...
+          {post.content.split("*")[0].trim().slice(0, 120) + "..."}
         </p>
 
         {/* Image - shown after text if exists */}
@@ -54,7 +62,7 @@ const PostCard = ({ post }: { post: Post }) => {
             loading="lazy"
             src={post.image}
             alt={post.title}
-            className="w-full max-h-60 object-contain rounded-md mb-3"
+            className=" max-h-60 object-contain rounded-md mb-3"
           />
         )}
       </div>
@@ -65,7 +73,7 @@ const PostCard = ({ post }: { post: Post }) => {
           <BookmarkButton post={post} />
           <span className="flex items-center gap-1">
             <FaRegComment />
-            {post.comment?.length ?? 0}
+            {post.commentCount || 0}
           </span>
           <span className="flex items-center gap-1">
             <FaEye />

@@ -30,16 +30,16 @@ const DraftsPage = () => {
 
   return (
     <Modal>
-      <div className="max-w-5xl  mt-5 mb-[4.5rem] md:p-6 space-y-6 md:w-10/12  mx-auto px-4 py-8 ">
-        <h2 className="hidden md:block text-3xl font-bold mb-4">Your Drafts</h2>
+      <div className="max-w-5xl mt-5 mb-[4.5rem] lg:p-6 space-y-6 lg:w-10/12  mx-auto px-4 py-8 ">
+        <h2 className="hidden lg:block text-3xl font-bold mb-4">Your Drafts</h2>
         {drafts.map((draft) => (
           <div
             key={draft._id}
-            className=" rounded-lg shadow-sm border border-border p-5 md:p-6 flex flex-col md:flex-row gap-4 md:items-start hover:shadow-md transition-shadow"
+            className=" rounded-lg shadow-sm border border-border p-5 lg:p-6 flex flex-col lg:flex-row gap-4 lg:items-start hover:shadow-md transition-shadow"
           >
             {/* Image Section */}
             {draft.image && (
-              <div className="w-full md:w-48 h-32 flex-shrink-0 overflow-hidden">
+              <div className="w-full lg:w-48 h-32 flex-shrink-0 overflow-hidden">
                 <img
                   src={draft.image}
                   alt={draft.title}

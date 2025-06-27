@@ -8,39 +8,44 @@ import type { Post } from "../../ui/types";
 const BookmarkButton = ({ post }: { post: Post }) => {
   const { data: user } = useGetMe();
   const { bookmark, unbookmark } = useBookmarkPost();
+
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarksCount, setBookmarksCount] = useState(post.bookmarks.length);
 
-  // 🧠 Set initial states once user is loaded
   useEffect(() => {
-    if (user) {
+    if (user && post.bookmarks) {
       setIsBookmarked(post.bookmarks.includes(user._id));
+      setBookmarksCount(post.bookmarks.length);
     }
   }, [user, post.bookmarks]);
 
   const handleToggleBookmark = () => {
-    if (isBookmarked) {
-      setIsBookmarked(false);
-      setBookmarksCount((count) => count - 1);
-      unbookmark.mutate(post._id, {
-        onError: () => {
-          setIsBookmarked(true);
-          setBookmarksCount((count) => count + 1);
-        },
-      });
-    } else {
-      setIsBookmarked(true);
-      setBookmarksCount((count) => count + 1);
-      bookmark.mutate(post._id, {
-        onError: () => {
-          setIsBookmarked(false);
-          setBookmarksCount((count) => count - 1);
-        },
-      });
-    }
+    if (!user) return;
+
+    const prevState = isBookmarked;
+    const prevCount = bookmarksCount;
+
+    const optimisticState = !prevState;
+    const optimisticCount = optimisticState ? prevCount + 1 : prevCount - 1;
+
+    setIsBookmarked(optimisticState);
+    setBookmarksCount(optimisticCount);
+
+    const mutation = optimisticState ? bookmark : unbookmark;
+
+    mutation.mutate(post._id, {
+      onError: () => {
+        setIsBookmarked(prevState);
+        setBookmarksCount(prevCount);
+      },
+    });
   };
+
   return (
-    <span onClick={handleToggleBookmark} className="flex items-center gap-1">
+    <span
+      onClick={handleToggleBookmark}
+      className="flex items-center gap-1 cursor-pointer"
+    >
       {isBookmarked ? (
         <FaBookmark className="text-blue-600" />
       ) : (

@@ -22,7 +22,10 @@ const NotificationPage = () => {
   useOutsideClick(() => setIsOpen(false));
 
   return (
-    <div className="relative max-w-3xl  mx-auto p-4" ref={dropdownRef}>
+    <div
+      className="relative lg:max-w-xl max-w-3xl overflow-auto scrollbar-hide mx-auto p-4 lg:p-5 pt-22"
+      ref={dropdownRef}
+    >
       {/* Header with dropdown toggle */}
       {isAuthenticated && (
         <div className="flex justify-between items-center mb-2">
@@ -30,7 +33,7 @@ const NotificationPage = () => {
             <h2 className="text-xl font-semibold relative">
               Notifications
               {unreadCount > 0 && (
-                <span className="hidden  absolute -top-2 -right-10 bg-red-500 text-white text-xs rounded-full w-5 h-5 md:flex items-center justify-center">
+                <span className="hidden  absolute -top-2 -right-10 bg-red-500 text-white text-xs rounded-full w-5 h-5 lg:flex items-center justify-center">
                   {unreadCount}
                 </span>
               )}
@@ -56,7 +59,7 @@ const NotificationPage = () => {
           isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="border rounded-md p-3 shadow-sm max-h-[60vh] overflow-auto space-y-3 ">
+        <div className="border rounded-md p-3 shadow-sm max-h-[60vh] md:max-h-[50vh] overflow-auto space-y-3 scrollbar-hide  ">
           {isLoading ? (
             <div className=" px-4 py-8">
               <Spinner />

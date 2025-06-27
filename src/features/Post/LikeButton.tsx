@@ -6,40 +6,40 @@ import { HiOutlineHeart } from "react-icons/hi2";
 import type { Post } from "../../ui/types";
 
 const LikeButton = ({ post }: { post: Post }) => {
+  
   const { data: user } = useGetMe();
   const { like, unlike } = useLikePost();
 
   const [isLiked, setIsLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(post.likes.length);
+  const [likesCount, setLikesCount] = useState(0);
 
-  // 🧠 Set initial states once user is loaded
   useEffect(() => {
-    if (user) {
+    if (user && post.likes) {
       setIsLiked(post.likes.includes(user._id));
+      setLikesCount(post.likes.length);
     }
   }, [user, post.likes]);
 
   const handleToggleLike = () => {
-    if (isLiked) {
-      setIsLiked(false);
-      setLikesCount((count) => count - 1);
-      unlike.mutate(post._id, {
-        onError: () => {
-          setIsLiked(true);
-          setLikesCount((count) => count + 1);
-        },
-      });
-    } else {
-      setIsLiked(true);
-      setLikesCount((count) => count + 1);
-      like.mutate(post._id, {
-        onError: () => {
-          setIsLiked(false);
-          setLikesCount((count) => count - 1);
-        },
-      });
-    }
+    if (!user) return;
+
+    const optimisticCount = isLiked ? likesCount - 1 : likesCount + 1;
+    const optimisticLike = !isLiked;
+
+    setLikesCount(optimisticCount);
+    setIsLiked(optimisticLike);
+
+    const mutation = isLiked ? unlike : like;
+
+    mutation.mutate(post._id, {
+      onError: () => {
+        // Revert
+        setLikesCount(likesCount);
+        setIsLiked(isLiked);
+      },
+    });
   };
+
   return (
     <span
       onClick={handleToggleLike}
@@ -50,5 +50,6 @@ const LikeButton = ({ post }: { post: Post }) => {
     </span>
   );
 };
+
 
 export default LikeButton;

@@ -4,6 +4,8 @@ const BASE_URL =
     ? import.meta.env.VITE_API_URL // only for dev
     : "/api"; // in production, backend serves frontend and proxy is relative
 
+// const BASE_URL = "http://localhost:3000/api";
+
 const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true, //

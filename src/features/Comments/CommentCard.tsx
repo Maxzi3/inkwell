@@ -60,7 +60,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
   };
 
   return (
-    <div className="p-4 border-b border-b-border md:w-[380px] ">
+    <div className="p-4 border-b border-b-border lg:w-[380px] ">
       <div className="flex items-start gap-3">
         <img
           src={comment.user.avatar}

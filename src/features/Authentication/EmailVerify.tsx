@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEmailVerify } from "./useEmailVerify";
 import Spinner from "../../ui/Spinner";
 import Logo from "../../components/Logo";
+import DarkModeToggle from "../../ui/DarkModeToggle";
 
 function EmailVerification() {
   const { token } = useParams<{ token: string }>();
@@ -17,19 +18,22 @@ function EmailVerification() {
   }, [token, verify]);
 
   return (
-    <div className="min-h-screen flex pt-36 items-center px-4 flex-col text-text-primary bg-primary">
-      <div className="flex items-center p-4 md:p-5 justify-between w-full">
+    <div className="min-h-screen flex items-center px- flex-col text-text-primary bg-primary">
+      <div className="flex items-center p-4 lg:p-5 justify-between w-full">
         <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
-          <Logo/>
+          <Logo />
         </h2>
+        <DarkModeToggle />
       </div>
 
       <div className="p-6 flex flex-col rounded-md w-full max-w-md text-center">
-        <h1 className="text-xl font-semibold mb-4">
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-4">
           {isPending ? (
             "Verifying your email..."
           ) : (
-            <p className="text-green-800">Verification Complete</p>
+            <p className="text-green-800 md:text-2xl lg:text-3xl">
+              Verification Complete
+            </p>
           )}
         </h1>
 

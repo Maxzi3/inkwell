@@ -21,7 +21,7 @@ const Footer = () => {
   if (isLoading || isAuthenticated === undefined) return null;
   return (
     <div className="fixed bottom-0 left-0 shadow-t-md w-full py-2 border-t border-gray-300 opacity-95 backdrop-blur-md">
-      <ul className="md:hidden  flex justify-between items-center px-5 py-2 text-2xl">
+      <ul className="lg:hidden  flex justify-between items-center px-5 py-2 text-2xl">
         {isAuthenticated ? (
           <>
             <NavLink to="/" className={getLinkClass}>

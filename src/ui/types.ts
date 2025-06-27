@@ -14,7 +14,7 @@ export interface Post {
   slug: string;
   likes: string[];
   bookmarks: string[];
-  comment: string[];
+  commentCount:number;
 }
 export interface Draft {
   _id: string;

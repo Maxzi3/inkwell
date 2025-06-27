@@ -7,10 +7,10 @@ export function useCreateReply() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: ReplyPayload) => createReplyOnComment(payload),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
         toast.success("Reply created");
       queryClient.invalidateQueries({
-        queryKey: ["comments", variables.postId],
+        queryKey: ["comments"],
       });
     },
       onError: (error: Error) => {

@@ -27,7 +27,7 @@ const BookmarksPage = () => {
 
   return (
     <div className="space-y-4 mt-5 mb-[4.5rem] ">
-      <div className="md:hidden flex items-center p-4 md:p-5 justify-between w-full">
+      <div className="lg:hidden flex items-center p-4 md:p-5 justify-between w-full">
         <button onClick={handleClick}>
           <FaArrowLeftLong className="flex shrink-0 items-center" />
         </button>
@@ -38,7 +38,7 @@ const BookmarksPage = () => {
       {bookmarks.map((post) => (
         <PostCard key={post._id} post={post} />
       ))}
-      <div className="md:block fixed hidden right-3 top-20">
+      <div className="lg:block fixed hidden right-3 top-20">
         <NotificationPage />
       </div>
     </div>

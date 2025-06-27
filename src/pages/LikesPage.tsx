@@ -23,7 +23,7 @@ const LikesPage = () => {
       {likes.map((post) => (
         <PostCard key={post._id} post={post} />
       ))}
-      <div className="md:block fixed hidden right-3 top-20">
+      <div className="lg:block fixed hidden right-3 top-20">
         <NotificationPage />
       </div>
     </div>

@@ -23,12 +23,12 @@ function ResetPasswordPage() {
 
   return (
     <div className="min-h-[90vh] flex items-center justify-center px-4 flex-col space-">
-      <div className="flex items-center justify-center p-4 md:p-5 w-full">
+      <div className="flex items-center justify-center p-4 lg:p-5 w-full">
         <Logo />
       </div>
       <form
         onSubmit={handleSubmit}
-        className=" mx-auto my-10 md:my-2 flex flex-col justify-center md:p-10 rounded-lg space-y-6 text-sm md:border border-gray-200 md:w-[30rem] w-[20rem]"
+        className=" mx-auto my-10 lg:my-2 flex flex-col justify-center lg:p-10 rounded-lg space-y-6 text-sm lg:border border-gray-200 lg:w-[30rem] w-[20rem]"
       >
         <h2 className="text-xl font-semibold mb-5 text-center">
           Reset Password

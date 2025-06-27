@@ -67,20 +67,20 @@ const AllPosts = () => {
         ) : !isPending && posts.length === 0 ? (
           <p className="mt-10 font-medium">No posts Found for your search</p>
         ) : (
-          <div className="grid grid-cols-1 mt-5 mb-14 md:border-none border-t border-t-border">
+          <div className="grid grid-cols-1 mt-5 mb-14 lg:border-none border-t border-t-border">
             {posts.map((post) => (
               <PostCard key={post._id} post={post} />
             ))}
           </div>
         )}
 
-        <div className="md:block fixed hidden right-3 top-20">
+        <div className="lg:block fixed hidden right-3 top-20">
           <NotificationPage />
         </div>
       </div>
 
       {totalPages > 1 && (
-        <div className="mb-20 flex md:justify-start justify-end">
+        <div className="mb-20 flex lg:justify-start justify-end">
           <Pagination
             page={page}
             totalPages={totalPages}

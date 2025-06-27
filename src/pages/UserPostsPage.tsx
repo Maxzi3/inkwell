@@ -20,11 +20,11 @@ const UserPostsDisplay = () => {
     if (!posts.length)
       return <p className="text-center text-gray-500">No posts yet.</p>;
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-5 mb-[4.5rem] ">
       {posts?.map((post) => (
         <PostCard key={post._id} post={post} />
       ))}
-      <div className="md:block fixed hidden right-3 top-20">
+      <div className="lg:block fixed hidden right-3 top-20">
         <NotificationPage />
       </div>
     </div>

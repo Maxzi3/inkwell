@@ -9,6 +9,7 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import Logo from "../../components/Logo";
 import { isAxiosError } from "axios";
+import DarkModeToggle from "../../ui/DarkModeToggle";
 
 function LoginForm() {
   const [searchParams] = useSearchParams();
@@ -66,20 +67,21 @@ function LoginForm() {
 
   return (
     <div className="min-h-screen flex items-center gap-3.5 px-4 flex-col space-x-4 space-y-4 text-text-primary bg-primary">
-      <div className="flex items-center p-4 md:p-5 gap-2 w-full">
+      <div className="flex items-center py-4 lg:py-5 gap-2 w-full">
         <button onClick={handleClick}>
           <FaArrowLeftLong className="mt-2" />
         </button>
         <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-1">
           <Logo />
         </h2>
+        <DarkModeToggle />
       </div>
       <h2 className=" tracking-light text-[28px] font-bold leading-tight px-4 text-center pt-5">
         Welcome back
       </h2>
       <form
         onSubmit={handleSubmit}
-        className="mx-auto my-10 md:my-2 flex flex-col justify-center md:p-10 rounded-lg space-y-6 text-sm md:border border-gray-200 md:w-[30rem] w-[20rem]"
+        className="mx-auto my-10 md:my-2 flex flex-col justify-center md:p-10 rounded-lg space-y-6 text-sm md:border border-gray-200 lg:w-[30rem] md:w-[40rem] w-[20rem]"
       >
         {/* Email Input */}
         <div className="mb-3 flex flex-col items-center">

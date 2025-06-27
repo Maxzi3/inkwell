@@ -23,7 +23,7 @@ const Search = () => {
   }, [debouncedSearch]);
 
   return (
-    <div className="relative w-full max-w-[500px] mx-auto">
+    <div className="relative w-full max-w-[500px] mx-auto lg:mb-0 mb-4">
       <FiSearch className="absolute left-8 top-1/2 -translate-y-1/2 text-gray-400 hover:scale-110 transition-transform" />
       <input
         className="border-none border-text-primary bg-input focus:ring-blue-500 transition-all duration-300 placeholder:text-text-primary flex w-11/12 mx-auto py-3 pl-[40px] overflow-hidden rounded-lg focus:outline-0 focus:ring-0 h-full  text-base font-normal leading-normal"

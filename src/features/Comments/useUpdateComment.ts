@@ -10,10 +10,10 @@ export function useUpdateComment() {
       commentId: string;
       content: string;
     }) => updateComment(payload),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       toast.success('Comment Updated')
       queryClient.invalidateQueries({
-        queryKey: ["comments", variables.postId],
+        queryKey: ["comments"],
       });
     },
   });

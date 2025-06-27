@@ -12,10 +12,10 @@ import Logo from "../components/Logo";
 
 const AppLayout = () => {
   const location = useLocation();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -26,19 +26,19 @@ const AppLayout = () => {
   if (isMobile) {
     return (
       <Modal>
-        <div className="md:hidden block text-text-primary bg-primary">
-          <div>
-            {!isProfilePage && (
+        <div className="lg:hidden block text-text-primary bg-primary">
+          {!isProfilePage && (
+            <div className="fixed top-0 left-0 right-0 z-50 bg-primary border-b border-text-secondary py-2">
               <div className="flex items-center justify-between w-full p-3">
                 <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
                   <Logo />
                 </h2>
                 <DarkModeToggle />
               </div>
-            )}
-            {isHomePage && <Search />}
-          </div>
-          <main className="overflow-hidden min-h-screen ">
+              {isHomePage && <Search />}
+            </div>
+          )}
+          <main className="overflow-hidden min-h-screen">
             <Outlet />
           </main>
           <Footer />
@@ -57,7 +57,7 @@ const AppLayout = () => {
   return (
     <Modal>
       <div>
-        <div className="hidden md:grid h-screen grid-cols-[10rem_1fr] grid-rows-[auto_1fr] text-text-primary bg-primary ">
+        <div className="hidden lg:grid h-screen grid-cols-[10rem_1fr] grid-rows-[auto_1fr] text-text-primary bg-primary ">
           <AccountHeader />
           <SideBar />
           <main className="overflow-scroll">

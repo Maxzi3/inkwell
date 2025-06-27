@@ -4,7 +4,7 @@ import AllPosts from "../features/Post/AllPosts"
 const HomePage = () => {
 
   return (
-    <div><AllPosts /></div>
+    <div className="lg:pt-0 pt-20"><AllPosts /></div>
   )
 }
 

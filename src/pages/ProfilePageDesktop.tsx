@@ -39,7 +39,7 @@ const ProfilePageDesktop = () => {
     "bg-gray-100 text-gray-800";
 
   return (
-    <div className="px-4 py-8 md:w-[600px] w-full mx-auto">
+    <div className="px-4 py-8 lg:w-[600px] w-full mx-auto">
       <h1 className="text-2xl font-bold mb-6 text-center">Your Profile</h1>
 
       {/* Profile Image */}

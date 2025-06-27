@@ -24,8 +24,8 @@ const HeaderWithSettings = () => {
 
     return (
         <div className="relative">
-            <div className="flex items-center justify-between w-full md:p-0 p-4">
-                <h2 className="md:hidden text-lg font-bold leading-tight tracking-[-0.015em]">
+            <div className="flex items-center justify-between w-full lg:p-0 p-4">
+                <h2 className="lg:hidden text-lg font-bold leading-tight tracking-[-0.015em]">
                 <Logo/>
                 </h2>
                 <CiSettings

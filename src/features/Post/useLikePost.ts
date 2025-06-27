@@ -9,7 +9,13 @@ export const useLikePost = () => {
     like: useMutation({
       mutationFn: likePost,
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["posts"] });
+        // Invalidate both the specific post and the list of posts
+        queryClient.invalidateQueries({
+          queryKey: ["post"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["posts"],
+        });
       },
       onError: () => toast.error("Could not like post"),
     }),
@@ -17,6 +23,8 @@ export const useLikePost = () => {
       mutationFn: unlikePost,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["posts"] });
+        queryClient.invalidateQueries({ queryKey: ["post"] });
+
       },
       onError: () => toast.error("Could not remove like"),
     }),

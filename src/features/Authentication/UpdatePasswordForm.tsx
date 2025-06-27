@@ -25,7 +25,7 @@ function UpdatePasswordForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="md:w-[600px] mx-auto flex flex-col justify-center p-8 rounded-lg space-y-6 text-sm md:border border-gray-200"
+      className="lg:w-[600px] w-full md:px-15 mx-auto flex flex-col justify-center p-8 rounded-lg space-y-6 text-sm lg:border border-gray-200"
     >
       {/* Current Password */}
       <div>
@@ -113,7 +113,7 @@ function UpdatePasswordForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="px-4 py-3 w-[150px] rounded-md disabled:bg-input bg-secondary text-primary hover:text-secondary hover:bg-input"
+          className=" py-3 w-[150px] rounded-md disabled:bg-input bg-secondary text-primary hover:text-secondary hover:bg-input"
         >
           {isPending ? (
             <div className="flex justify-center">

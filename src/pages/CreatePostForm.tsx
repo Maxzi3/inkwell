@@ -120,7 +120,7 @@ const CreatePostForm = () => {
   return (
     <form
       onSubmit={handleSubmit((data) => onSubmit(data, false))}
-      className="md:w-[600px] mx-auto flex flex-col justify-center p-8 rounded-lg space-y-6 text-sm md:border border-gray-200"
+      className="lg:w-[600px] lg:mt-0 md:mt-32 mt-12 w-full  mx-auto flex flex-col justify-center md:p-0 lg:p-8 p-8 rounded-lg space-y-6 text-sm lg:border border-gray-200"
     >
       <h2 className="text-2xl font-semibold text-center">Create New Post</h2>
 
@@ -170,6 +170,7 @@ const CreatePostForm = () => {
             },
           })}
           disabled={isBusy}
+          placeholder="Use  *  to start a new paragraph"
           className="w-full mt-1 p-2 bg-input border-none h-40 text-base disabled:bg-gray-500"
         />
         {errors.content && (
@@ -216,7 +217,7 @@ const CreatePostForm = () => {
       <div className="flex justify-between w-full">
         <button
           type="submit"
-          className="w-[100px] flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+          className="w-[90px] flex items-center justify-center gap-2 bg-blue-600 text-white py-2  rounded hover:bg-blue-700 transition"
         >
           {isCreating ? (
             <SpinnerMini />
@@ -231,7 +232,7 @@ const CreatePostForm = () => {
         <button
           type="button"
           onClick={handleDraftSave}
-          className="w-[150px] flex items-center justify-center gap-2 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition"
+          className="w-[140px] flex items-center justify-center gap-2 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
         >
           {isDrafting ? (
             <SpinnerMini />

@@ -123,10 +123,10 @@ function UpdateUserDataForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="md:w-[600px] mx-auto flex flex-col justify-center p-8 rounded-lg space-y-6 text-sm md:border border-gray-200"
+      className="lg:w-[600px] w-full md:px-15 mx-auto flex flex-col justify-center p-8 rounded-lg space-y-6 text-sm lg:border border-gray-200"
     >
       {/* Avatar Display */}
-      <div className="flex md:flex-row flex-col items-center md:space-y-4 md:space-x-5">
+      <div className="flex lg:flex-row flex-col items-center lg:space-y-4 lg:space-x-5">
         <div>
           <label className="block font-medium mb-1">Current Avatar</label>
           {currentPhoto ? (

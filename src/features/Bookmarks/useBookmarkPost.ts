@@ -11,6 +11,7 @@ export const useBookmarkPost = () => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
         queryClient.invalidateQueries({ queryKey: ["posts"] });
+        queryClient.invalidateQueries({ queryKey: ["post"] });
       },
       onError: () => toast.error("Could not like bookmark"),
     }),
@@ -19,6 +20,7 @@ export const useBookmarkPost = () => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
         queryClient.invalidateQueries({ queryKey: ["posts"] });
+        queryClient.invalidateQueries({ queryKey: ["post"] });
       },
       onError: () => toast.error("Could not remove bookmark"),
     }),
